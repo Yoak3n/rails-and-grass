@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://den5cqbfmtfaw"]
+
+[ext_resource type="Script" uid="uid://b110svqyn4cir" path="res://core/ui/pause_menu/pause_menu.gd" id="1_6gjcc"]
+
+[node name="PauseMenu" type="Control" unique_id=739758733]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_6gjcc")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1266024015]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.10980392)
+
+[node name="Title" type="Label" parent="." unique_id=1044340772]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 225.0
+offset_top = 182.0
+offset_right = 825.0
+offset_bottom = 282.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 48
+text = "游戏暂停"
+horizontal_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1206646367]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 368.0
+offset_top = 367.0
+offset_right = 676.0
+offset_bottom = 398.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="Quit" type="Button" parent="HBoxContainer" unique_id=1447943449]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "退出游戏"
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=141875000]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Continue" type="Button" parent="HBoxContainer" unique_id=1641075831]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "继续游戏"

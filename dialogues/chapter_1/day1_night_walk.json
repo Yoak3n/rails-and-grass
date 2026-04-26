@@ -1,0 +1,223 @@
+{
+  "start": {
+	"speaker": "系统提示",
+	"text": "【第二天傍晚：医院到棉纺村的三里田间夜路】\n她拎着空保温桶在前，你在后，隔着半步的距离。蛙鸣叫开了，空气里有股油菜花初开的气息。",
+	"options": [
+	  {
+		"text": "［跟在她身后］",
+		"next": "walk_1",
+		"type": "action"
+	  }
+	]
+  },
+  "walk_1": {
+	"speaker": "知意",
+	"text": "（语气随意，像想到什么说什么）你是做什么的。",
+	"options": [
+	  {
+		"text": "我跟你提过。",
+		"next": "walk_2",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_2": {
+	"speaker": "知意",
+	"text": "什么时候？",
+	"options": [
+	  {
+		"text": "我说我刚到这个地方，没有工作，没有住址，昨天你是第一次见我，但我不是第一次见你。",
+		"next": "walk_3",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_3": {
+	"speaker": "知意",
+	"text": "（轻轻笑了一声）行，那你是从哪来的。",
+	"options": [
+	  {
+		"text": "很远的地方。",
+		"next": "walk_4",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_4": {
+	"speaker": "知意",
+	"text": "多远的。",
+	"options": [
+	  {
+		"text": "坐车到不了。",
+		"next": "walk_5",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_5": {
+	"speaker": "知意",
+	"text": "那就是外省。\n（停顿了一会）为什么不说话了。",
+	"options": [
+	  {
+		"text": "在想怎么编。",
+		"next": "walk_6",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_6": {
+	"speaker": "知意",
+	"text": "（又笑了一声，比刚才多半个音）那你来干什么的——",
+	"options": [
+	  {
+		"text": "改变一些事情。",
+		"next": "walk_7",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_7": {
+	"speaker": "知意",
+	"text": "什么事情？",
+	"options": [
+	  {
+		"text": "改变你的命运，我来救你。",
+		"original_text": "改变你的命运，我来救你。",
+		"next": "walk_taboo",
+		"type": "taboo",
+		"effect": "increase_pain"
+	  },
+	  {
+		"text": "说来话长......和你有关。",
+		"next": "walk_normal",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_taboo": {
+	"speaker": "知意",
+	"text": "（你无法说出真相，最后只能挤出一句不着边际的话。）\n不好笑。",
+	"options": [
+	  {
+		"text": "我没在说实话。",
+		"next": "walk_continue",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_normal": {
+	"speaker": "知意",
+	"text": "（偏头看了你一眼）不好笑。",
+	"options": [
+	  {
+		"text": "我没在说实话。",
+		"next": "walk_continue",
+		"type": "normal"
+	  }
+	]
+  },
+  "walk_continue": {
+	"speaker": "程砚",
+	"text": "（你们继续走。前面出现了一片低矮的居民楼）\n你妈的病不能累，但你一个人扛着，她迟早会看出来。",
+	"options": [
+	  {
+		"text": "沉吗。",
+		"next": "bucket_1",
+		"type": "normal"
+	  }
+	]
+  },
+  "bucket_1": {
+	"speaker": "知意",
+	"text": "什么。",
+	"options": [
+	  {
+		"text": "保温桶。你拎了一路。",
+		"next": "bucket_2",
+		"type": "normal"
+	  }
+	]
+  },
+  "bucket_2": {
+	"speaker": "知意",
+	"text": "空的，不沉。",
+	"options": [
+	  {
+		"text": "我问的不是保温桶。",
+		"next": "bucket_3",
+		"type": "normal"
+	  }
+	]
+  },
+  "bucket_3": {
+	"speaker": "知意",
+	"text": "（长久的安静，她把保温桶换到另一只手）\n你到底是谁。",
+	"options": [
+	  {
+		"text": "程砚。",
+		"next": "bucket_4",
+		"type": "normal"
+	  }
+	]
+  },
+  "bucket_4": {
+	"speaker": "知意",
+	"text": "我问的不是名字。\n（停顿）不过你说的那个——改变一些事。怎么改变。",
+	"options": [
+	  {
+		"text": "［递出书店招聘启事］",
+		"next": "flyer",
+		"type": "action"
+	  }
+	]
+  },
+  "flyer": {
+	"speaker": "知意",
+	"text": "（借着月光展开。看了一遍，把它对折好，放进口袋里）\n旧书店在哪。",
+	"options": [
+	  {
+		"text": "你学校后面那条巷子。",
+		"next": "flyer_2",
+		"type": "normal"
+	  }
+	]
+  },
+  "flyer_2": {
+	"speaker": "知意",
+	"text": "你怎么知道我在找兼职。",
+	"options": [
+	  {
+		"text": "［沉默］",
+		"next": "flyer_3",
+		"type": "hidden"
+	  }
+	]
+  },
+  "flyer_3": {
+	"speaker": "知意",
+	"text": "（轻笑了一声，像笑又像叹息）\n你就不能好好回答我一个问题。",
+	"options": [
+	  {
+		"text": "慢慢你就知道了。",
+		"next": "arrive_home",
+		"type": "normal"
+	  }
+	]
+  },
+  "arrive_home": {
+	"speaker": "知意",
+	"text": "你这个人真的很奇怪。\n（走到枇杷树下，转过身）\n你明天还在医院门口？",
+	"options": [
+	  {
+		"text": "在。",
+		"next": "end",
+		"type": "normal"
+	  }
+	]
+  },
+  "end": {
+	"speaker": "知意",
+	"text": "那我告诉你我妈明天想吃什么——骨头汤，二十三块一份，食堂有，但去晚了就没了。五点半开饭，六点开始卖骨头汤。\n（推开院门进去）",
+	"options": []
+  }
+}

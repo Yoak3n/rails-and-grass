@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://dt3je73asoj4u"]
+
+[ext_resource type="Script" uid="uid://df2kljci616n0" path="res://scenes/common/main.gd" id="1_kuhtq"]
+[ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="2_btn4e"]
+[ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="3_1bltu"]
+
+[node name="Main" type="Node2D" unique_id=1615500048]
+script = ExtResource("1_kuhtq")
+
+[node name="PlayerRng" parent="." unique_id=444613394 instance=ExtResource("2_btn4e")]
+position = Vector2(577, 331)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=430048762]
+visible = true
+
+[node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("3_1bltu")]

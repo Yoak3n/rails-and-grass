@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://cvgvmrra2itjd"]
+
+[ext_resource type="Script" uid="uid://dx4ngpvqdevo4" path="res://core/components/interactable/interactable.gd" id="2_3kwq3"]
+[ext_resource type="Texture2D" uid="uid://dxx7bhcblciff" path="res://icon.svg" id="3_o61hl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xl8nq"]
+size = Vector2(39, 29)
+
+[node name="Trash" type="Area2D" unique_id=1884696071]
+script = ExtResource("2_3kwq3")
+item_name = "垃圾堆"
+dialogue_json_path = "res://dialogues/chapter_1/day1_trash.json"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1316855402]
+position = Vector2(0, -7)
+shape = SubResource("RectangleShape2D_xl8nq")
+
+[node name="Polygon2D" type="Sprite2D" parent="." unique_id=1333695218]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_o61hl")

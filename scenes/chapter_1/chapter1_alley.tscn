@@ -1,0 +1,84 @@
+[gd_scene format=4 uid="uid://bt7ubt723n66w"]
+
+[ext_resource type="Texture2D" uid="uid://tljdu18b6a6l" path="res://assets/sprites/environment/Free Sample/Armor_01.png" id="1_7ny73"]
+[ext_resource type="Script" uid="uid://co21e8kxcurpu" path="res://scenes/chapter_1/chapter_1_alley.gd" id="1_8dgce"]
+[ext_resource type="Texture2D" uid="uid://un3y5eoow6l" path="res://assets/sprites/environment/Free Sample/Floor_Corner_01.png" id="2_8dgce"]
+[ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="3_kjuoy"]
+[ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_kjuoy"]
+[ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_lxoul"]
+[ext_resource type="PackedScene" uid="uid://dw31fyfkqtkkj" path="res://scenes/chapter_1/items/umbrella.tscn" id="7_x5ygl"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lxoul"]
+texture = ExtResource("2_8dgce")
+texture_region_size = Vector2i(409, 249)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, -20)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -20)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -20)
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -20)
+
+[sub_resource type="TileSet" id="TileSet_x5ygl"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(409, 204)
+sources/0 = SubResource("TileSetAtlasSource_lxoul")
+
+[sub_resource type="Gradient" id="Gradient_kjuoy"]
+offsets = PackedFloat32Array(0.084337346, 0.76506025, 1)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_lxoul"]
+gradient = SubResource("Gradient_kjuoy")
+fill = 1
+fill_from = Vector2(0.5, 0.5173913)
+fill_to = Vector2(0, 1)
+
+[node name="Chapter1Alley" type="Node2D" unique_id=1438240935]
+y_sort_enabled = true
+script = ExtResource("1_8dgce")
+
+[node name="Statue" type="Sprite2D" parent="." unique_id=388054941]
+position = Vector2(660, 257)
+texture = ExtResource("1_7ny73")
+hframes = 4
+frame = 3
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Statue" unique_id=326418535]
+visible = false
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Statue/StaticBody2D" unique_id=36131388]
+position = Vector2(2.9999995, 4.999999)
+scale = Vector2(0.97872347, 0.995924)
+polygon = PackedVector2Array(19, -91, -49, -64, -47, 70, -8, 93, 42, 65, 45, -74, -17, -45, -49, -64)
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=1729008328]
+z_index = -1
+scale = Vector2(0.25, 0.25)
+tile_map_data = PackedByteArray("AAAHAAEAAAACAAAAAAAIAAEAAAABAAAAAAAJAAEAAAACAAAAAAAKAAEAAAAAAAAAAAALAAEAAAACAAAAAAAMAAEAAAADAAAAAAAMAAIAAAABAAAAAAALAAIAAAACAAAAAAAKAAIAAAABAAAAAAAJAAIAAAACAAAAAAAIAAIAAAADAAAAAAAHAAIAAAABAAAAAAANAAEAAAABAAAAAAANAAIAAAAAAAAAAAAOAAIAAAABAAAAAAAOAAEAAAACAAAAAAAPAAEAAAADAAAAAAAPAAIAAAADAAAAAAAPAAMAAAABAAAAAAAOAAMAAAAAAAAAAAANAAMAAAADAAAAAAAMAAMAAAADAAAAAAALAAMAAAABAAAAAAAKAAMAAAABAAAAAAAJAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAHAAMAAAACAAAAAAA=")
+tile_set = SubResource("TileSet_x5ygl")
+
+[node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=410791064]
+color = Color(0.101960786, 0.16862746, 0.23529412, 1)
+
+[node name="PlayerRng" parent="." unique_id=444613394 instance=ExtResource("3_kjuoy")]
+position = Vector2(826, 407)
+
+[node name="PointLight2D" type="PointLight2D" parent="PlayerRng" unique_id=871620953]
+position = Vector2(0, -33.45)
+texture = SubResource("GradientTexture2D_lxoul")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1902439674]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58710033]
+visible = true
+
+[node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_kjuoy")]
+
+[node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_lxoul")]
+position = Vector2(546, 326)
+
+[node name="Umbrella" parent="." unique_id=723840651 instance=ExtResource("7_x5ygl")]
+position = Vector2(369, 322)

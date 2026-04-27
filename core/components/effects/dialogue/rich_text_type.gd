@@ -13,7 +13,7 @@ var bbcode = "type"
 
 func _process_custom_fx(char_fx: CharFXTransform) -> bool:
 	# 1. 获取用户在标签中设置的参数，并给出默认值
-	var speed: float = char_fx.env.get("speed", 25.0) # 默认每秒显示 25 个字符
+	var speed: float = char_fx.env.get("speed", 10.0) # 默认每秒显示 25 个字符
 	var delay: float = char_fx.env.get("delay", 0.0)  # 默认无停顿
 	
 	# 这个时间是从 RichTextLabel 的可见性或文本改变时开始计算的运行时间

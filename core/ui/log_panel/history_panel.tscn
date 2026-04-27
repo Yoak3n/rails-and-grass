@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://ot3aeeeqootp"]
+
+[ext_resource type="Script" uid="uid://vgk2u2crfj75" path="res://core/ui/log_panel/history_panel.gd" id="1_x1hgl"]
+
+[node name="HistoryPanel" type="PanelContainer" unique_id=1140646199]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_x1hgl")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1562611500]
+layout_mode = 2
+color = Color(0, 0, 0, 0.10980392)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1085091469]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=58214990]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1539197079]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+alignment = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1622642393]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "对话记录"
+horizontal_alignment = 1
+
+[node name="CloseHistoryButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer" unique_id=1686447252]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "X"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=708569220]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="HistoryList" type="VBoxContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=1985549285]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="draw" from="." to="." method="_on_draw"]

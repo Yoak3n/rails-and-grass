@@ -1,15 +1,19 @@
 extends Control
 class_name DialogueUI
 
+const _BUBBLE_SCENE: PackedScene = preload("res://core/ui/dialogue/dialogue_bubble.tscn")
+
 @onready var _ui_panel: PanelContainer = $PanelContainer
 @onready var _ui_text_label: RichTextLabel = $PanelContainer/MarginContainer/HBoxContainer/RichTextLabel
 @onready var _ui_options_container: VBoxContainer = $PanelContainer/MarginContainer/HBoxContainer/OptionsContainer
 @onready var _taboo_flash_rect: ColorRect = $TabooFlashRect
+
 var _is_taboo_triggering: bool = false
 var _active_presentation: String = "box"
 
 # 头顶气泡相关
 var _bubble_label: RichTextLabel = null
+var _bubble: Control = null
 var _bubble_target: Node = null
 
 # --- 打字机与状态控制 ---
@@ -17,6 +21,7 @@ var _is_typing: bool = false
 var _is_waiting_for_click: bool = false
 var _current_options: Array = []
 var _current_next_node: String = ""
+var _current_duration: float = 0.0
 var _type_speed_base: float = 30.0 # 默认打字速度（每秒字数）
 var _type_timer: float = 0.0
 var _auto_advance_event_id: int = 0
@@ -41,14 +46,7 @@ func _ready() -> void:
 				break
 		if not has_type_effect:
 			_ui_text_label.install_effect(RichTextType.new())
-	_bbcode_measure = RichTextLabel.new()
-	_bbcode_measure.bbcode_enabled = true
-	_bbcode_measure.visible = false
-	_bbcode_measure.scroll_active = false
-	_bbcode_measure.fit_content = true
-	_bbcode_measure.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_bbcode_measure.process_mode = Node.PROCESS_MODE_DISABLED
-	add_child(_bbcode_measure)
+	_init_bbcode_measure()
 	# 监听全局对话管理器的信号
 	DialogueManager.text_ready.connect(_on_text_ready)
 	DialogueManager.options_ready.connect(_on_options_ready)
@@ -70,6 +68,8 @@ func _process(delta: float) -> void:
 			_finish_typing()
 	elif _active_presentation in ["monologue","ghost"] and _bubble_label:
 		_bubble_label.visible_characters = target_chars
+		if _bubble and is_instance_valid(_bubble) and _bubble.has_method("request_sync"):
+			_bubble.call("request_sync")
 		if _bubble_label.visible_characters >= _bubble_label.get_total_character_count():
 			_finish_typing()
 
@@ -94,15 +94,28 @@ func _input(event: InputEvent) -> void:
 			# 没有 next_node 也没有 options，说明是真结束了
 			DialogueManager.dialogue_ended.emit()
 
+func _init_bbcode_measure() -> void:
+	if _bbcode_measure and is_instance_valid(_bbcode_measure):
+		return
+	_bbcode_measure = RichTextLabel.new()
+	_bbcode_measure.bbcode_enabled = true
+	_bbcode_measure.scroll_active = false
+	_bbcode_measure.fit_content = true
+	_bbcode_measure.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_bbcode_measure.visible = false
+	_bbcode_measure.process_mode = Node.PROCESS_MODE_DISABLED
+	add_child(_bbcode_measure)
+
 func _finish_typing() -> void:
 	_is_typing = false
 	_render_options_or_wait()
 
 # --- 信号响应 ---
-func _on_text_ready(speaker: String, text: String, presentation: String, target: Node, next_node_id: String) -> void:
+func _on_text_ready(speaker: String, text: String, presentation: String, target: Node, next_node_id: String, duration: float) -> void:
 	# cache
 	_active_presentation = presentation
 	_current_next_node = next_node_id
+	_current_duration = maxf(duration, 0.0)
 	_auto_advance_event_id += 1
 	_type_plan_active = false
 
@@ -155,10 +168,11 @@ func _render_options_or_wait() -> void:
 			_ui_text_label.append_text(" [color=#888888]▼[/color]")
 		else:
 			_is_waiting_for_click = true
-			# 气泡模式：可以选择等待点击，也可以选择 2 秒后自动跳转
-			# 这里我们选择 5 秒后自动跳转
+			var wait_seconds: float = 5.0
+			if _current_duration > 0.0:
+				wait_seconds = _current_duration
 			var current_event_id := _auto_advance_event_id
-			var t := get_tree().create_timer(5.0)
+			var t := get_tree().create_timer(wait_seconds)
 			t.timeout.connect(func():
 				if current_event_id != _auto_advance_event_id:
 					return
@@ -274,55 +288,48 @@ func _play_taboo_flash_effect() -> void:
 func _ensure_bubble(target: Node) -> void:
 	if target == null or not (target is CanvasItem):
 		return
-	if _bubble_label and is_instance_valid(_bubble_label) and _bubble_target == target:
+	if _bubble and is_instance_valid(_bubble) and _bubble_target == target:
 		return
 		
 	_clear_bubble()
-	var label := RichTextLabel.new()
-	label.name = "DialogueBubble"
-	label.visible = false
-	label.bbcode_enabled = true
-	label.scroll_active = false
-	label.fit_content = true
-	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	label.size = Vector2(420, 0)
-	label.position = Vector2(-210, -110)
-	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	label.vertical_alignment = VERTICAL_ALIGNMENT_TOP
-	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	label.z_index = 4096
-	label.z_as_relative = false
-	label.install_effect(RichTextType.new())
-	
-	target.add_child(label)
-	_bubble_label = label
+	var bubble := _BUBBLE_SCENE.instantiate() as Control
+	if not bubble:
+		return
+	bubble.name = "DialogueBubble"
+	bubble.visible = false
+	bubble.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	bubble.z_index = 4096
+	bubble.z_as_relative = false
+	if bubble.has_method("set_anchor_offset"):
+		bubble.call("set_anchor_offset", Vector2(0.0, -110.0))
+	target.add_child(bubble)
+	_bubble = bubble
+	_bubble_label = bubble.get_node_or_null("BubbleLabel") as RichTextLabel
 	_bubble_target = target
 
 func _show_bubble_text(text: String, target: Node, presentation: String) -> void:
 	_ensure_bubble(target)
-	if not _bubble_label or not is_instance_valid(_bubble_label):
+	if not _bubble or not is_instance_valid(_bubble) or not _bubble_label or not is_instance_valid(_bubble_label):
 		return
 		
-	_bubble_label.visible = true
+	_bubble.visible = true
+	if _bubble.has_method("set_presentation"):
+		_bubble.call("set_presentation", presentation)
 	_apply_text_with_type_plan(_bubble_label, text)
-	
-	match presentation:
-		"monologue":
-			_bubble_label.add_theme_color_override("default_color", Color(0.98, 0.98, 0.98, 1.0))
-		"ghost":
-			_bubble_label.add_theme_color_override("default_color", Color(0.75, 0.82, 0.92, 0.78))
-		_:
-			_bubble_label.add_theme_color_override("default_color", Color(1, 1, 1, 1))
+	if _bubble.has_method("request_sync"):
+		_bubble.call("request_sync")
 
 func _hide_bubble() -> void:
+	if _bubble and is_instance_valid(_bubble):
+		_bubble.visible = false
 	if _bubble_label and is_instance_valid(_bubble_label):
-		_bubble_label.visible = false
 		_bubble_label.clear()
 
 func _clear_bubble() -> void:
-	if _bubble_label and is_instance_valid(_bubble_label):
-		_bubble_label.queue_free()
+	if _bubble and is_instance_valid(_bubble):
+		_bubble.queue_free()
 	_bubble_label = null
+	_bubble = null
 	_bubble_target = null
 
 func _measure_bbcode_visible_chars(bbcode_text: String) -> int:

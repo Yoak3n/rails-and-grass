@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://1whudjxeeo2o"]
+
+[ext_resource type="Script" uid="uid://bv6537bgy6wfx" path="res://_autoloads/main_menu/main_menu.gd" id="1_ibe8x"]
+[ext_resource type="PackedScene" uid="uid://ot3aeeeqootp" path="res://core/ui/log_panel/history_panel.tscn" id="2_x0jon"]
+[ext_resource type="PackedScene" uid="uid://7qxwgaqd2c8k" path="res://core/ui/setting_menu/setting_menu.tscn" id="3_2jppj"]
+
+[node name="CanvasLayer" type="CanvasLayer" unique_id=783963380]
+process_mode = 3
+layer = 100
+script = ExtResource("1_ibe8x")
+
+[node name="MainMenu" type="Control" parent="." unique_id=566480394]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Header" type="HBoxContainer" parent="MainMenu" unique_id=1651892718]
+layout_mode = 0
+offset_left = 9.0
+offset_right = 1137.0
+offset_bottom = 51.0
+
+[node name="LogBtn" type="Button" parent="MainMenu/Header" unique_id=1625046333]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "LOG
+"
+
+[node name="Control" type="Control" parent="MainMenu/Header" unique_id=806749698]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SettingBtn" type="Button" parent="MainMenu/Header" unique_id=374383961]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "Setting"
+
+[node name="HistoryPanel" parent="MainMenu" unique_id=1140646199 instance=ExtResource("2_x0jon")]
+process_mode = 3
+visible = false
+layout_mode = 1
+
+[node name="SettingMenu" parent="MainMenu" unique_id=1559348554 instance=ExtResource("3_2jppj")]
+process_mode = 3
+visible = false
+layout_mode = 0
+
+[connection signal="pressed" from="MainMenu/Header/LogBtn" to="." method="_on_log_btn_pressed"]
+[connection signal="pressed" from="MainMenu/Header/SettingBtn" to="." method="_on_setting_btn_pressed"]

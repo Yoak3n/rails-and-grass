@@ -75,10 +75,11 @@ func _input(event: InputEvent)-> void:
 
 func _on_interact_area_entered(area: Area2D) -> void:
 	if area.is_in_group("interactables"):
+		area.prepare_to_interact()
 		current_interactable = area
 		# 可选：在头顶显示一个小提示（如 "[E] 调查"）
 
 func _on_interact_area_exited(area: Area2D) -> void:
 	if area == current_interactable:
+		current_interactable.leave_from_interact()
 		current_interactable = null
-		# 可选：隐藏头顶提示

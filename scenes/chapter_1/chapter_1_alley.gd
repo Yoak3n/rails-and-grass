@@ -8,11 +8,11 @@ func _ready() -> void:
 	if SceneManager.transition_finished.is_connected(_on_level_entered):
 		SceneManager.transition_finished.disconnect(_on_level_entered)
 	SceneManager.transition_finished.connect(_on_level_entered, CONNECT_ONE_SHOT)
-
+	
 
 func _on_level_entered() -> void:
 	print("Level Entered: 黑屏淡入结束，画面亮起。游戏正式开始！")
-	
+	GameUI.show_ui()
 	# 关卡开场逻辑，比如自动触发一段内心独白
 	# DialogueManager.load_dialogue("res://dialogues/day1_intro.json")
 	# DialogueManager.start_dialogue("start", "monologue", player)

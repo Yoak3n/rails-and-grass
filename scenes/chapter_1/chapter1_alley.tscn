@@ -73,7 +73,6 @@ texture = SubResource("GradientTexture2D_lxoul")
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1902439674]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58710033]
-visible = true
 
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_kjuoy")]
 

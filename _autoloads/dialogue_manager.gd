@@ -1,8 +1,27 @@
 extends Node
 
+
+var session_history: Array[Dictionary] = []
+var _history_bbcode_strip_regex: RegEx = null
+
+# （可选）添加一个清理历史的方法，可以在 SceneManager 切换场景时调用
+func clear_history() -> void:
+	session_history.clear()
+
+func _filter_history_text(raw_text: String) -> String:
+	if raw_text == "":
+		return ""
+	if _history_bbcode_strip_regex == null:
+		_history_bbcode_strip_regex = RegEx.new()
+		_history_bbcode_strip_regex.compile("\\[\\/?[A-Za-z][^\\]]*\\]")
+	var filtered: String = _history_bbcode_strip_regex.sub(raw_text, "", true)
+	# 替换换行符为逗号，确保在气泡中显示正常
+	filtered = filtered.replace("\n", ",")
+	return filtered.strip_edges()
+
 # =================== 信号 ========================
 # presentation 参数，告诉 UI 层用什么形式展示（比如弹窗还是头顶气泡）
-signal text_ready(speaker: String, text: String, presentation: String, target: Node, next_node_id: String)
+signal text_ready(speaker: String, text: String, presentation: String, target: Node, next_node_id: String, duration: float)
 # 当选项准备就绪时发送，UI 层监听并生成按钮
 signal options_ready(options: Array)
 # 触发特殊视觉/声音效果的信号
@@ -67,7 +86,6 @@ func select_option(option_data: Dictionary) -> void:
 	# 1. 处理数值变动
 	if option_data.has("effect"):
 		_handle_effect(option_data["effect"])
-		
 	# 2. 检查是否为“禁忌选项”
 	var opt_type = option_data.get("type", "normal")
 	if opt_type == "taboo":
@@ -76,9 +94,20 @@ func select_option(option_data: Dictionary) -> void:
 		# 保存 next 节点，UI 演出结束后由 UI 调用 proceed_after_taboo()
 		_current_node_id = option_data.get("next", "") 
 		taboo_triggered.emit(orig_text, repl_text, _active_presentation)
+		if repl_text != "":
+			session_history.append({
+				"speaker": "程砚",
+				"text": _filter_history_text(String(repl_text))
+			})
 		return
 
 	# 3. 正常跳转
+	var choice = option_data.get("text","...")
+	if choice != "":
+		session_history.append({
+			"speaker": "程砚",
+			"text": _filter_history_text(String(choice))
+		})
 	var next_node = option_data.get("next", "")
 	if next_node == "":
 		dialogue_ended.emit()
@@ -114,9 +143,14 @@ func _go_to_node(node_id: String) -> void:
 	var speaker = node_data.get("speaker", "")
 	var text = node_data.get("text", "")
 	var next_node_id = node_data.get("next_node", "")
+	var duration: float = float(node_data.get("duration", 3))
 	# 发射信号，把文本、说话人、表现形式、目标节点统统交给 UI 层去烦恼
-	text_ready.emit(speaker, text, _active_presentation, _default_target, next_node_id)
-	
+	text_ready.emit(speaker, text, _active_presentation, _default_target, next_node_id, duration)
+	if text != "":
+		session_history.append({
+			"speaker": speaker,
+			"text": _filter_history_text(String(text))
+		})
 	# 如果节点本身带有效果
 	if node_data.has("effect"):
 		var o = node_data["effect"].split("|",false,1)

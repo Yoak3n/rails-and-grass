@@ -7,21 +7,20 @@
 	},
 	"1": {
 		"speaker": "程砚",
-		"text": "我记得[type speed=2]......[/type]这里在2028年早就被拆了。",
+		"text": "我记得[type speed=2]......[/type]",
 		"presentation": "monologue",
 		"effect": "flashback",
 		"next_node": "2"
 	},
 	"2": {
 		"speaker": "程砚",
-		"text": "建成了高架桥的桥墩",
+		"text": "[type delay=1 speed=10]这里在2028年就被拆掉\n做了高架桥的桥墩[/type]",
 		"presentation": "monologue",
 		"next_node": "end"
 	},
-
 	"end": {
 		"speaker": "程砚",
-		"text": "我真的回来了？",
+		"text": "[type delay=3.0]我真的回来了？[/type]",
 		"presentation": "monologue"
 	}
 }

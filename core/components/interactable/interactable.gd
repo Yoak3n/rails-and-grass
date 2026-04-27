@@ -38,12 +38,8 @@ func _ready() -> void:
 	
 	name_label.modulate = Color(1, 1, 1, 0)
 	
-	# 3. 确保初始状态文字是完全透明的（隐藏）
-	# Color(1, 1, 1, 0) 代表纯白色，但透明度为 0
-	name_label.modulate = Color(1, 1, 1, 0) 
-	
-	body_entered.connect(_on_body_entered)
-	body_exited.connect(_on_body_exited)
+	# body_entered.connect(_on_body_entered)
+	# body_exited.connect(_on_body_exited)
 
 
 @export var dialogue_json_path: String = ""
@@ -51,6 +47,7 @@ func _ready() -> void:
 
 # 气泡模式下的目标节点（如果为空且是 monologue，UI 层会自动找玩家）
 @export var bubble_target: NodePath
+
 func interact(player: Player) -> void:
 	print("交互触发: ", self.name, " 读取: ", dialogue_json_path)
 	
@@ -72,6 +69,12 @@ func interact(player: Player) -> void:
 		player.can_move = true
 		push_error("Interactable: Failed to load dialogue JSON.")
 
+func prepare_to_interact() -> void:
+	_animate_label_alpha(1.0)
+
+func leave_from_interact() -> void:
+	_animate_label_alpha(0.0)
+
 # 对话结束时的回调
 func _on_dialogue_ended(player: Player) -> void:
 	player.can_move = true
@@ -79,13 +82,13 @@ func _on_dialogue_ended(player: Player) -> void:
 	if DialogueManager.dialogue_ended.is_connected(_on_dialogue_ended):
 		DialogueManager.dialogue_ended.disconnect(_on_dialogue_ended)
 
-func _on_body_entered(body):
-	if body.is_in_group("player") and name_label:
-		_animate_label_alpha(1.0)
+# func _on_body_entered(body):
+# 	if body.is_in_group("player") and name_label:
+# 		_animate_label_alpha(1.0)
 
-func _on_body_exited(body):
-	if body.is_in_group("player") and name_label:
-		_animate_label_alpha(0.0)
+# func _on_body_exited(body):
+# 	if body.is_in_group("player") and name_label:
+# 		_animate_label_alpha(0.0)
 		
 		
 func _animate_label_alpha(target_alpha: float):

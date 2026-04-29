@@ -59,6 +59,7 @@ texture = SubResource("GradientTexture2D_lxoul")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58710033]
 
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_uls5r")]
+visible = false
 
 [node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_ti18t")]
 position = Vector2(546, 326)

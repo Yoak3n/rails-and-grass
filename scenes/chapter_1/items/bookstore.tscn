@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://cgxfduospgojq"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uljop"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yousl"]
+
+[node name="Bookstore" type="Area2D" unique_id=604022834]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1606919432]
+shape = SubResource("RectangleShape2D_uljop")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1262208975]
+texture = SubResource("PlaceholderTexture2D_yousl")

@@ -34,6 +34,7 @@ var _type_plan_total_chars: int = 0
 var _bbcode_measure: RichTextLabel = null
 
 func _ready() -> void:
+	visible = true
 	_ui_panel.visible = false
 	_taboo_flash_rect.visible = false
 	_taboo_flash_rect.modulate.a = 0.0 # 初始透明度设为 0

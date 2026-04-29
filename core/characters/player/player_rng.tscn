@@ -134,6 +134,7 @@ _data = {
 size = Vector2(93, 43)
 
 [node name="PlayerRng" type="CharacterBody2D" unique_id=444613394]
+collision_layer = 16
 script = ExtResource("1_2n0lm")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1788402405]

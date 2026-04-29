@@ -3,12 +3,13 @@ extends Node2D
 @onready var player: Player = $PlayerRng
 @onready var camera = $PlayerRng/Camera2D
 @onready var dialogue_ui = $CanvasLayer/DialogueUI
-
 func _ready() -> void:
+	dialogue_ui.visible = true
 	if SceneManager.transition_finished.is_connected(_on_level_entered):
 		SceneManager.transition_finished.disconnect(_on_level_entered)
 	SceneManager.transition_finished.connect(_on_level_entered, CONNECT_ONE_SHOT)
 	SceneManager.before_leave.connect(_before_level_leave, CONNECT_ONE_SHOT)
+	CutsceneManager.register_json("1", "res://cutscenes/chapter_1/umbrella_overhead.json")
 	
 
 func _on_level_entered() -> void:

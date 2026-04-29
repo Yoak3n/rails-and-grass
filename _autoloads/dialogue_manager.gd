@@ -85,7 +85,7 @@ func start_dialogue(start_node: String = "start", presentation: String = PRESENT
 func select_option(option_data: Dictionary) -> void:
 	# 1. 处理数值变动
 	if option_data.has("effect"):
-		_handle_effect(option_data["effect"])
+		_apply_effect(option_data["effect"])
 	# 2. 检查是否为“禁忌选项”
 	var opt_type = option_data.get("type", "normal")
 	if opt_type == "taboo":
@@ -152,12 +152,14 @@ func _go_to_node(node_id: String) -> void:
 			"text": _filter_history_text(String(text))
 		})
 	# 如果节点本身带有效果
+	var cutscene_auto_end_id: String = ""
 	if node_data.has("effect"):
-		var o = node_data["effect"].split("|",false,1)
-		if o.size()== 2:
-			_handle_effect(o[0],o[1])
-		else:
-			_handle_effect(o[0])
+		var effect_str := String(node_data.get("effect", ""))
+		if effect_str != "":
+			var parts := effect_str.split("|", false, 1)
+			if parts.size() == 2 and parts[0] == "cutscene":
+				cutscene_auto_end_id = String(parts[1]).strip_edges()
+		_apply_effect(node_data["effect"])
 		
 	var options = node_data.get("options", [])
 	if options.size() == 0:
@@ -165,9 +167,44 @@ func _go_to_node(node_id: String) -> void:
 		 
 	else:
 		options_ready.emit(options)
+	if cutscene_auto_end_id != "" and options.size() == 0 and String(next_node_id) == "":
+		var current_node := _current_node_id
+		var wait_seconds := maxf(duration, 0.5)
+		get_tree().create_timer(wait_seconds).timeout.connect(func():
+			if _current_node_id != current_node:
+				return
+			dialogue_ended.emit()
+		, CONNECT_ONE_SHOT)
 		
+func _apply_effect(effect_value: Variant) -> void:
+	if typeof(effect_value) != TYPE_STRING:
+		return
+	var effect_str: String = String(effect_value)
+	if effect_str == "":
+		return
+	var parts := effect_str.split("|", false, 1)
+	var effect_name: String = parts[0]
+	var effect_param: String = ""
+	if parts.size() == 2:
+		effect_param = parts[1]
+	_handle_effect(effect_name, effect_param)
+
+func _to_int(value: Variant) -> int:
+	match typeof(value):
+		TYPE_INT:
+			return int(value)
+		TYPE_FLOAT:
+			return int(value)
+		TYPE_STRING:
+			var s := String(value).strip_edges()
+			if s == "":
+				return 0
+			return int(s)
+		_:
+			return 0
+
 # 处理隐藏数值变化
-func _handle_effect(effect_name: String,value :int = 0) -> void:
+func _handle_effect(effect_name: String, value: Variant = 0) -> void:
 	match effect_name:
 		"increase_silence":
 			state_changed.emit("silence_count", 1)
@@ -175,5 +212,34 @@ func _handle_effect(effect_name: String,value :int = 0) -> void:
 		"increase_pain":
 			state_changed.emit("pain_value", 1)
 			print("【隐藏属性变动】系统排斥痛感 + 1")
+		"cutscene":
+			var cutscene_id: String = String(value).strip_edges()
+			if cutscene_id != "":
+				CutsceneManager.play_registered(cutscene_id)
 		_:
-			state_changed.emit(effect_name, value)
+			state_changed.emit(effect_name, _to_int(value))
+
+func start_sequence(sequence: Array[Dictionary], presentation: String = PRESENTATION_MONOLOGUE, target: Node = null) -> void:
+	_current_dialogue.clear()
+	_default_presentation = presentation
+	_default_target = target
+	_active_presentation = presentation
+	var count := sequence.size()
+	if count <= 0:
+		dialogue_ended.emit()
+		return
+	for i in range(count):
+		var node_id := "seq_%d" % i
+		var next_id := ""
+		if i < count - 1:
+			next_id = "seq_%d" % (i + 1)
+		var item := sequence[i]
+		_current_dialogue[node_id] = {
+			"speaker": String(item.get("speaker", "")),
+			"text": String(item.get("text", "")),
+			"presentation": String(item.get("presentation", presentation)),
+			"duration": float(item.get("duration", 2.0)),
+			"next_node": next_id,
+			"options": []
+		}
+	start_dialogue("seq_0", presentation, target)

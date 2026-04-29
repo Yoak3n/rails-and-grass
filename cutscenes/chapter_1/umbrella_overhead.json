@@ -1,0 +1,92 @@
+{
+  "script": "res://cutscenes/chapter_1/umbrella_overhead.gd",
+  "params": {
+    "girl_node": "Zhiyi",
+    "girl_visual_node": "Polygon2D",
+    "props": {
+      "umbrella": {
+        "scene": "res://scenes/chapter_1/items/umbrella.tscn",
+        "name": "UmbrellaOverhead",
+        "z_offset": 2,
+        "hold_offset": [10, -40],
+        "to_offset": [0, -110],
+        "duration": 0.35
+      }
+    },
+    "steps": [
+      {
+        "dialogue_index": 0,
+        "effects": [
+          {
+            "type": "item_hold",
+            "prop": "umbrella",
+            "at": 0
+          },
+          {
+            "type": "move_node",
+            "to_pos": [619, 491],
+            "duration": "step"
+          },
+          {
+            "type": "move_camera",
+            "to_pos": [619, 491],
+            "cam_offset": [0, -116],
+            "duration": "step"
+          }
+        ]
+      },
+      {
+        "dialogue_index": 1,
+        "effects": [
+          {
+            "type": "face_to_player",
+            "at": 0
+          }
+        ]
+      },
+      {
+        "dialogue_index": 2,
+        "effects": [
+          {
+            "type": "move_node_to_player",
+            "offset": [-40, 10],
+            "duration": "step",
+            "end_before": "props.umbrella.duration"
+          },
+          {
+            "type": "move_camera_to_player",
+            "cam_offset": [0, -116],
+            "duration": "step",
+            "end_before": "props.umbrella.duration"
+          },
+          {
+            "type": "item_transfer",
+            "prop": "umbrella",
+            "duration": "props.umbrella.duration",
+            "at": "end"
+          }
+        ]
+      }
+    ],
+    "dialogue": [
+      {
+        "speaker": "",
+        "text": "（雨里，她撑着鹅黄色的伞走到路口。）",
+        "duration": 3.5,
+        "presentation": "ghost"
+      },
+      {
+        "speaker": "",
+        "text": "（她抬头，隔着雨幕看向你。）",
+        "duration": 3.5,
+        "presentation": "ghost"
+      },
+      {
+        "speaker": "",
+        "text": "（几秒后，她朝你走来。）",
+        "duration": 3.5,
+        "presentation": "ghost"
+      }
+    ]
+  }
+}

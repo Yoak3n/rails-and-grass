@@ -1,10 +1,19 @@
 [gd_scene format=3 uid="uid://cgxfduospgojq"]
 
+[ext_resource type="Script" path="res://core/components/interactable/interactable.gd" id="1_jg3wn"]
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_uljop"]
+size = Vector2(96, 96)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_yousl"]
+size = Vector2(96, 96)
 
 [node name="Bookstore" type="Area2D" unique_id=604022834]
+script = ExtResource("1_jg3wn")
+item_name = "书店"
+dialogue_json_path = "res://dialogues/chapter_1/day1_bookstore.json"
+start_node_id = "start"
+dialogue_presentation = "box"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1606919432]
 shape = SubResource("RectangleShape2D_uljop")

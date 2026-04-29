@@ -1,0 +1,88 @@
+extends Node
+
+signal finished
+
+var _held_props: Dictionary = {}
+
+const Utils := preload("res://core/components/effects/cutscene/cutscene_utils.gd")
+const Runner := preload("res://core/components/effects/cutscene/cutscene_effect_runner.gd")
+
+func start(context: Dictionary) -> void:
+	call_deferred("_run", context)
+
+func _get_duration_from_dialogue(step: Dictionary, dialogue_seq: Array[Dictionary], default_value: float) -> float:
+	var dialogue_index: int = int(step.get("dialogue_index", -1))
+	if dialogue_index >= 0 and dialogue_index < dialogue_seq.size():
+		return Utils.get_float(dialogue_seq[dialogue_index].get("duration", default_value), default_value)
+	return default_value
+
+func _get_step_duration(step: Dictionary, dialogue_seq: Array[Dictionary]) -> float:
+	var d: float = Utils.get_float(step.get("duration", 0.0), 0.0)
+	if d > 0.0:
+		return d
+	return maxf(_get_duration_from_dialogue(step, dialogue_seq, 0.01), 0.01)
+
+func _run(context: Dictionary) -> void:
+	var scene := get_tree().current_scene
+	if scene == null:
+		finished.emit()
+		return
+	var player := get_tree().get_first_node_in_group("player") as Node2D
+	if player == null:
+		finished.emit()
+		return
+	var umbrella_name: String = String(context.get("umbrella_name", "UmbrellaOverhead"))
+	if player.get_node_or_null(umbrella_name) != null:
+		finished.emit()
+		return
+	var girl_node: String = String(context.get("girl_node", "Zhiyi"))
+	var girl := scene.get_node_or_null(NodePath(girl_node)) as Node2D
+	if girl == null:
+		finished.emit()
+		return
+	var visual_node: String = String(context.get("girl_visual_node", "Polygon2D"))
+	var player_cam := player.get_node_or_null("Camera2D") as Camera2D
+	var cut_cam := Camera2D.new()
+	scene.add_child(cut_cam)
+	if player_cam != null:
+		cut_cam.zoom = player_cam.zoom
+		cut_cam.global_position = player_cam.global_position
+	cut_cam.make_current()
+
+	var cam_offset: Vector2 = Utils.vec2_from(context.get("cam_offset", null), Vector2(0.0, -116.0))
+
+	var raw_dialogue: Variant = context.get("dialogue", [])
+	var dialogue_seq: Array[Dictionary] = []
+	if raw_dialogue is Array:
+		for item in raw_dialogue as Array:
+			if item is Dictionary:
+				dialogue_seq.append(item as Dictionary)
+	if dialogue_seq.size() > 0:
+		DialogueManager.start_sequence(dialogue_seq, "ghost", girl)
+	var steps: Array = []
+	var raw_steps: Variant = context.get("steps", [])
+	if raw_steps is Array:
+		steps = raw_steps as Array
+
+	if not steps.is_empty():
+		for raw_step in steps:
+			if not (raw_step is Dictionary):
+				continue
+			var step: Dictionary = raw_step as Dictionary
+			var step_duration: float = _get_step_duration(step, dialogue_seq)
+			Runner.schedule_effects(scene, girl, player, cut_cam, cam_offset, step, step_duration, context, visual_node, _held_props)
+			await get_tree().create_timer(step_duration).timeout
+	else:
+		var fallback_step: Dictionary = {
+			"duration": 0.01,
+			"effects": []
+		}
+		Runner.schedule_effects(scene, girl, player, cut_cam, cam_offset, fallback_step, 0.01, context, visual_node, _held_props)
+
+	if player_cam != null:
+		player_cam.make_current()
+	if is_instance_valid(cut_cam):
+		cut_cam.queue_free()
+	if dialogue_seq.size() > 0:
+		await DialogueManager.dialogue_ended
+	finished.emit()

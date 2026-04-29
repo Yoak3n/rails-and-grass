@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://den5cqbfmtfaw" path="res://core/ui/pause_menu/pause_menu.tscn" id="3_o63tg"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_2n0lm"]
-radius = 27.0
+radius = 21.0
 height = 56.0
 
 [sub_resource type="Animation" id="Animation_o63tg"]

@@ -24,6 +24,7 @@ buses/default_bus_layout="uid://1c3fevmt6ook"
 DialogueManager="*uid://600p8irsd752"
 GameState="*uid://dbeegoapn4lgo"
 SceneManager="*uid://46wg83t6j4fl"
+CutsceneManager="*res://_autoloads/cutscene_manager.gd"
 GameUI="*uid://1whudjxeeo2o"
 
 [display]

@@ -4,8 +4,10 @@
 [ext_resource type="Script" uid="uid://djx6foo2rcpui" path="res://scenes/chapter_1/chapter_1_street.gd" id="1_cdp88"]
 [ext_resource type="TileSet" uid="uid://byrg2lha04ajc" path="res://assets/tilesets/floor.tres" id="2_flovd"]
 [ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="3_flovd"]
+[ext_resource type="PackedScene" uid="uid://cgxfduospgojq" path="res://scenes/chapter_1/items/bookstore.tscn" id="4_bookstore"]
 [ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="5_uef20"]
 [ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="6_u6lxk"]
+[ext_resource type="PackedScene" uid="uid://cmu5won3ykgxq" path="res://core/characters/npc/zhiyi.tscn" id="8_ixxn4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cdp88"]
 texture = ExtResource("1_0qf1p")
@@ -31,6 +33,10 @@ y_sort_enabled = true
 position = Vector2(121, 434)
 speed = 500.0
 
+[node name="Bookstore" parent="." unique_id=1683201770 instance=ExtResource("4_bookstore")]
+z_index = 4
+position = Vector2(285.365, 294.15)
+
 [node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("5_uef20")]
 z_index = 6
 y_sort_enabled = true
@@ -39,9 +45,9 @@ item_name = "小巷"
 target_scene_path = "uid://bt7ubt723n66w"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1946930511]
-visible = false
 
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("6_u6lxk")]
+visible = false
 
 [node name="CanvasGroup" type="CanvasGroup" parent="." unique_id=529958183]
 
@@ -121,3 +127,8 @@ shape = SubResource("RectangleShape2D_u6lxk")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="AirWall/Down" unique_id=2119497749]
 polygon = PackedVector2Array(1255, 214, 1292, 225, 1296, 193)
+
+[node name="Zhiyi" parent="." unique_id=491426857 instance=ExtResource("8_ixxn4")]
+z_index = 5
+y_sort_enabled = true
+position = Vector2(833, 372)

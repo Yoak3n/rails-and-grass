@@ -1,136 +1,27 @@
 {
   "start": {
 	"speaker": "系统提示",
-	"text": "你站在一家关门的书店门口避雨。\n雨幕把整条街浇成一片模糊的灰绿色。\n然后你看见了那把伞。鹅黄色的伞。",
+	"text": "你站在一家关门的书店门口避雨。\n雨幕把整条街浇成一片模糊的灰绿色。",
 	"options": [
 	  {
 		"text": "［看向撑伞的人］",
-		"next": "see_zhiyi",
+		"next": "recognize",
 		"type": "action"
 	  }
 	]
   },
-  "see_zhiyi": {
-	"speaker": "程砚",
-	"text": "（内心独白）她穿着蓝白校服，褪色的牛仔外套，拖着一个半人高的编织袋……\n两个人的目光隔着雨街碰在一起。她没有闪躲，安静地看了我两秒。然后她撑着伞穿过街道，把伞举到了我头顶上。",
-	"options": [
-	  {
-		"text": "［继续沉默］",
-		"next": "she_speaks",
-		"type": "action"
-	  }
-	]
-  },
-  "she_speaks": {
-	"speaker": "知意",
-	"text": "你没伞？",
-	"options": [
-	  {
-		"text": "没有。",
-		"next": "leg_injury",
-		"type": "normal"
-	  }
-	]
-  },
-  "leg_injury": {
-	"speaker": "程砚",
-	"text": "（她没再说话，只是举着伞。你看到她左膝上贴着一块洗得卷边的肤色胶布，沾了点泥。）",
-	"options": [
-	  {
-		"text": "你的腿怎么了？",
-		"next": "leg_answer",
-		"type": "normal"
-	  }
-	]
-  },
-  "leg_answer": {
-	"speaker": "知意",
-	"text": "（低头看了一眼）摔的。",
-	"options": [
-	  {
-		"text": "疼吗。",
-		"next": "leg_answer2",
-		"type": "normal"
-	  }
-	]
-  },
-  "leg_answer2": {
-	"speaker": "知意",
-	"text": "不疼。\n（公交车刹车声）车来了。伞给你。",
-	"options": [
-	  {
-		"text": "去棉纺村？",
-		"next": "how_do_you_know",
-		"type": "normal"
-	  }
-	]
-  },
-  "how_do_you_know": {
-	"speaker": "知意",
-	"text": "（她愣住了，低头看了看自己的校服，又抬头看你）\n你怎么知道？",
-	"options": [
-	  {
-		"text": "［沉默］",
-		"next": "bus_ride",
-		"type": "hidden",
-		"effect": "increase_silence"
-	  },
-	  {
-		"text": "我来自未来，我认识你。",
-		"original_text": "我来自未来，我认识你。",
-		"next": "bus_ride_taboo",
-		"type": "taboo",
-		"effect": "increase_pain"
-	  }
-	]
-  },
-  "bus_ride": {
-	"speaker": "知意",
-	"text": "（她没有追问，只是把伞收回去）\n暂时到我外婆家住几天......我妈住院了。",
-	"options": [
-	  {
-		"text": "［上车同行］",
-		"next": "arrive",
-		"type": "action"
-	  }
-	]
-  },
-  "bus_ride_taboo": {
-	"speaker": "知意",
-	"text": "（被系统的强行修正打断后，她觉得你举止有些古怪，但没有深究，收回了伞）\n暂时到我外婆家住几天......我妈住院了。",
-	"options": [
-	  {
-		"text": "［上车同行］",
-		"next": "arrive",
-		"type": "action"
-	  }
-	]
-  },
-  "arrive": {
+  "recognize":{
 	"speaker": "系统提示",
-	"text": "【终点站：棉纺村】\n你帮她把编织袋拎下车。她掏出纸条辨认方向。",
+	"text": "然后你看见了那把伞。鹅黄色的伞。",
 	"options": [
 	  {
-		"text": "往前走第二个路口右转。",
-		"next": "farewell",
-		"type": "normal"
-	  }
-	]
-  },
-  "farewell": {
-	"speaker": "知意",
-	"text": "（她看了你很久，还是没有问，把伞递给你）\n你拿着，我有雨衣。\n（拖出去两步，停下来，没有回头）我叫沈知意。",
-	"options": [
-	  {
-		"text": "程砚。",
+		"text": "［继续］",
 		"next": "end",
-		"type": "normal"
+		"type": "action"
 	  }
 	]
   },
   "end": {
-	"speaker": "知意",
-	"text": "（她点了点头，拐进右边的路口。左腿微微拖了一下，背影消失在灰蒙蒙的雨雾里。）",
-	"options": []
+	"effect" : "cutscene| 1"
   }
 }

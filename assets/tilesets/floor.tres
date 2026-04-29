@@ -1,0 +1,21 @@
+[gd_resource type="TileSet" format=3 uid="uid://byrg2lha04ajc"]
+
+[ext_resource type="Texture2D" uid="uid://un3y5eoow6l" path="res://assets/sprites/environment/Free Sample/Floor_Corner_01.png" id="1_5ywps"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pi21k"]
+texture = ExtResource("1_5ywps")
+texture_region_size = Vector2i(409, 249)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, -20)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, -20)
+2:0/0 = 0
+2:0/0/texture_origin = Vector2i(0, -20)
+3:0/0 = 0
+3:0/0/texture_origin = Vector2i(0, -20)
+
+[resource]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(409, 204)
+sources/0 = SubResource("TileSetAtlasSource_pi21k")

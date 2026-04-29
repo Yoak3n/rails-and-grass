@@ -17,7 +17,7 @@ func _on_quit_pressed()->void:
 	#get_tree().quit()
    # 如果你想退回到主菜单场景，可以改成：
 	# get_tree().paused = false # 记得切场景前解除暂停！
-	get_tree().change_scene_to_file("res://scenes/common/start_menu.tscn")
+	SceneManager.change_scene("res://scenes/common/start_menu.tscn","",0.0)
 
 func _on_continue_pressed()-> void:
 	toggle_pause()

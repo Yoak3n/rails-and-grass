@@ -17,11 +17,13 @@ var can_move: bool:
 @onready var visuals = $CollisionShape2D/Visuals
 @onready var player_camera = $Camera2D
 @onready var anim_player = $CollisionShape2D/Visuals/Mesh/AnimationPlayer
+@onready var pause_menu = $PauseMenu
 var current_interactable: Area2D = null
 var last_anim_dir = "idle"
 var move_right: bool = false
 func _ready() -> void:
 	add_to_group("player")
+	pause_menu.visible = true
 	interact_detector.area_entered.connect(_on_interact_area_entered)
 	interact_detector.area_exited.connect(_on_interact_area_exited)
 	

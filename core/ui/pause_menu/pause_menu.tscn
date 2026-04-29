@@ -5,7 +5,6 @@
 [node name="CanvasLayer" type="CanvasLayer" unique_id=1463644565]
 
 [node name="PauseMenu" type="Control" parent="." unique_id=739758733]
-process_mode = 3
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_6gjcc")

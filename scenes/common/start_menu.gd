@@ -21,9 +21,9 @@ func _on_start_pressed() -> void:
 		GameState.reset_game()
 		
 	# 3. 将接力棒交给全局管家 SceneManager
-	# 这里的意思是：用 2.0 秒慢慢变黑，然后加载 chapter1_alley.tscn，把玩家传送到 "SpawnPoint_Alley"
-	print("MainMenu: 请求切图到第一关 ->chapter1_alley.tscn")
-	SceneManager.change_scene("res://scenes/chapter_1/chapter1_alley.tscn", "SpawnPoint_Alley", 1.0)
+	# 这里的意思是：用 1.0 秒慢慢变黑，然后加载 chapter_1_alley.tscn，把玩家传送到 "SpawnPoint_Alley"
+	print("MainMenu: 请求切图到第一关 ->chapter_1_alley.tscn")
+	SceneManager.change_scene("res://scenes/chapter_1/chapter_1_alley.tscn", "SpawnPoint_Alley", 1.0)
 
 func _on_quit_pressed() -> void:
 	# 优雅退出游戏

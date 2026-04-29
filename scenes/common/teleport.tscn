@@ -65,6 +65,8 @@ _data = {
 
 [node name="Transport" type="Area2D" unique_id=1209401574]
 script = ExtResource("1_r3p8i")
+item_name = "未命名街道"
+target_scene_path = "uid://c800golkx84m1"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2081735970]
 shape = SubResource("CircleShape2D_sdxh6")

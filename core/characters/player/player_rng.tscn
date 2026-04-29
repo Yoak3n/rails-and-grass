@@ -161,3 +161,6 @@ position = Vector2(-2.5, -22.5)
 shape = SubResource("RectangleShape2D_nxawm")
 
 [node name="PauseMenu" parent="." unique_id=1007351073 instance=ExtResource("3_o63tg")]
+process_mode = 3
+layer = 100
+visible = false

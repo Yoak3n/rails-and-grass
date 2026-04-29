@@ -1,31 +1,13 @@
 [gd_scene format=4 uid="uid://bt7ubt723n66w"]
 
-[ext_resource type="Texture2D" uid="uid://tljdu18b6a6l" path="res://assets/sprites/environment/Free Sample/Armor_01.png" id="1_7ny73"]
-[ext_resource type="Script" uid="uid://co21e8kxcurpu" path="res://scenes/chapter_1/chapter_1_alley.gd" id="1_8dgce"]
-[ext_resource type="Texture2D" uid="uid://un3y5eoow6l" path="res://assets/sprites/environment/Free Sample/Floor_Corner_01.png" id="2_8dgce"]
-[ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="3_kjuoy"]
-[ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_kjuoy"]
-[ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_lxoul"]
-[ext_resource type="PackedScene" uid="uid://dw31fyfkqtkkj" path="res://scenes/chapter_1/items/umbrella.tscn" id="7_x5ygl"]
-[ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/transport.tscn" id="8_0ilky"]
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lxoul"]
-texture = ExtResource("2_8dgce")
-texture_region_size = Vector2i(409, 249)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, -20)
-1:0/0 = 0
-1:0/0/texture_origin = Vector2i(0, -20)
-2:0/0 = 0
-2:0/0/texture_origin = Vector2i(0, -20)
-3:0/0 = 0
-3:0/0/texture_origin = Vector2i(0, -20)
-
-[sub_resource type="TileSet" id="TileSet_x5ygl"]
-tile_shape = 1
-tile_layout = 5
-tile_size = Vector2i(409, 204)
-sources/0 = SubResource("TileSetAtlasSource_lxoul")
+[ext_resource type="Script" uid="uid://co21e8kxcurpu" path="res://scenes/chapter_1/chapter_1_alley.gd" id="1_1blta"]
+[ext_resource type="Texture2D" uid="uid://tljdu18b6a6l" path="res://assets/sprites/environment/Free Sample/Armor_01.png" id="2_fdost"]
+[ext_resource type="TileSet" uid="uid://byrg2lha04ajc" path="res://assets/tilesets/floor.tres" id="3_1blta"]
+[ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="4_6r3mn"]
+[ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_uls5r"]
+[ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_ti18t"]
+[ext_resource type="PackedScene" uid="uid://dw31fyfkqtkkj" path="res://scenes/chapter_1/items/umbrella.tscn" id="7_x7706"]
+[ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="8_vo20t"]
 
 [sub_resource type="Gradient" id="Gradient_kjuoy"]
 offsets = PackedFloat32Array(0.084337346, 0.76506025, 1)
@@ -39,11 +21,11 @@ fill_to = Vector2(0, 1)
 
 [node name="Chapter1Alley" type="Node2D" unique_id=1438240935]
 y_sort_enabled = true
-script = ExtResource("1_8dgce")
+script = ExtResource("1_1blta")
 
 [node name="Statue" type="Sprite2D" parent="." unique_id=388054941]
 position = Vector2(660, 257)
-texture = ExtResource("1_7ny73")
+texture = ExtResource("2_fdost")
 hframes = 4
 frame = 3
 
@@ -59,13 +41,14 @@ polygon = PackedVector2Array(19, -91, -49, -64, -47, 70, -8, 93, 42, 65, 45, -74
 z_index = -1
 scale = Vector2(0.25, 0.25)
 tile_map_data = PackedByteArray("AAAHAAEAAAACAAAAAAAIAAEAAAABAAAAAAAJAAEAAAACAAAAAAAKAAEAAAAAAAAAAAALAAEAAAACAAAAAAAMAAEAAAADAAAAAAAMAAIAAAABAAAAAAALAAIAAAACAAAAAAAKAAIAAAABAAAAAAAJAAIAAAACAAAAAAAIAAIAAAADAAAAAAAHAAIAAAABAAAAAAANAAEAAAABAAAAAAANAAIAAAAAAAAAAAAOAAIAAAABAAAAAAAOAAEAAAACAAAAAAAPAAEAAAADAAAAAAAPAAIAAAADAAAAAAAPAAMAAAABAAAAAAAOAAMAAAAAAAAAAAANAAMAAAADAAAAAAAMAAMAAAADAAAAAAALAAMAAAABAAAAAAAKAAMAAAABAAAAAAAJAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAHAAMAAAACAAAAAAAGAAMAAAADAAAAAAAGAAIAAAABAAAAAAAGAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAEAAEAAAABAAAAAAADAAEAAAADAAAAAAACAAEAAAAAAAAAAAABAAEAAAADAAAAAAAAAAEAAAAAAAAAAAD//wEAAAADAAAAAAD//wIAAAACAAAAAAD//wMAAAADAAAAAAAAAAMAAAAAAAAAAAABAAMAAAADAAAAAAACAAMAAAACAAAAAAADAAMAAAAAAAAAAAAEAAMAAAADAAAAAAAFAAMAAAACAAAAAAAFAAIAAAABAAAAAAAEAAIAAAACAAAAAAADAAIAAAABAAAAAAACAAIAAAABAAAAAAABAAIAAAAAAAAAAAAAAAIAAAADAAAAAAA=")
-tile_set = SubResource("TileSet_x5ygl")
+tile_set = ExtResource("3_1blta")
 
 [node name="CanvasModulate" type="CanvasModulate" parent="." unique_id=410791064]
 color = Color(0.101960786, 0.16862746, 0.23529412, 1)
 
-[node name="PlayerRng" parent="." unique_id=444613394 instance=ExtResource("3_kjuoy")]
+[node name="PlayerRng" parent="." unique_id=444613394 instance=ExtResource("4_6r3mn")]
 position = Vector2(826, 407)
+speed = 500.0
 
 [node name="PointLight2D" type="PointLight2D" parent="PlayerRng" unique_id=871620953]
 position = Vector2(0, -33.45)
@@ -75,14 +58,14 @@ texture = SubResource("GradientTexture2D_lxoul")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=58710033]
 
-[node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_kjuoy")]
+[node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_uls5r")]
 
-[node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_lxoul")]
+[node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_ti18t")]
 position = Vector2(546, 326)
 
-[node name="Umbrella" parent="." unique_id=723840651 instance=ExtResource("7_x5ygl")]
+[node name="Umbrella" parent="." unique_id=723840651 instance=ExtResource("7_x7706")]
 position = Vector2(369, 322)
 
-[node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_0ilky")]
+[node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_vo20t")]
 position = Vector2(-105, 32)
-item_name = "未命名目2地"
+item_name = "巷口"

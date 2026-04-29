@@ -5,6 +5,7 @@ extends Node
 signal transition_started
 signal screen_blacked_out
 signal transition_finished
+signal before_leave 
 
 var _canvas_layer: CanvasLayer
 var _color_rect: ColorRect
@@ -34,7 +35,9 @@ func _ready() -> void:
 func change_scene(path: String, spawn_point_name: String = "", fade_duration: float = 1.0) -> void:
 	if _is_transitioning:
 		return
-		
+	
+	before_leave.emit()
+	
 	_is_transitioning = true
 	next_spawn_point = spawn_point_name
 	transition_started.emit()

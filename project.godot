@@ -15,6 +15,10 @@ run/main_scene="uid://bthraukibjyov"
 config/features=PackedStringArray("4.6", "Mobile")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="uid://1c3fevmt6ook"
+
 [autoload]
 
 DialogueManager="*uid://600p8irsd752"

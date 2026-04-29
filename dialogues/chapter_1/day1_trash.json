@@ -14,13 +14,13 @@
 	},
 	"2": {
 		"speaker": "程砚",
-		"text": "[type delay=1 speed=10]这里在2028年就被拆掉\n做了高架桥的桥墩[/type]",
+		"text": "这里在2028年就被拆掉\n做了高架桥的桥墩",
 		"presentation": "monologue",
 		"next_node": "end"
 	},
 	"end": {
 		"speaker": "程砚",
-		"text": "[type delay=3.0]我真的回来了？[/type]",
+		"text": "[type delay=1.0]我真的回来了？[/type]",
 		"presentation": "monologue"
 	}
 }

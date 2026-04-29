@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://v773abqtm5k6"]
+
+[ext_resource type="Script" uid="uid://1v83kehoddw1" path="res://core/ui/log_panel/history_item.gd" id="1_tupqr"]
+
+[node name="HistoryItem" type="PanelContainer" unique_id=1613672357]
+custom_minimum_size = Vector2(0, 40)
+script = ExtResource("1_tupqr")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=738906315]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/normal_font_size = 22
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+vertical_alignment = 1

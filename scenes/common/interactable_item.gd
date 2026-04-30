@@ -28,12 +28,14 @@ func interact(player: Player) -> void:
 	var picked := _pick_dialogue()
 	var json_path: String = String(picked.get("json_path", ""))
 	var start_node: String = String(picked.get("start_node", "start"))
-	var presentation: String = String(picked.get("presentation", dialogue_presentation))
 	var target_node: Node = _resolve_bubble_target(picked.get("bubble_target", null), player)
 	if json_path == "":
 		return
 	print("交互触发: ", self.name, " 读取: ", json_path)
-	CutsceneManager.play_dialogue(json_path, start_node, presentation, target_node, self.name)
+	if DialogueManager.load_dialogue(json_path):
+		DialogueManager.start_dialogue(start_node, "box", target_node)
+	else:
+		push_error("InteractableItem: Failed to load dialogue JSON.")
 	_increment_counter()
 
 func prepare_to_interact() -> void:
@@ -145,8 +147,6 @@ func _apply_config(cfg: Dictionary) -> void:
 		label_y_offset = float(cfg.get("label_y_offset", label_y_offset))
 	if cfg.has("bubble_target"):
 		bubble_target = NodePath(String(cfg.get("bubble_target", "")))
-	if cfg.has("dialogue_presentation"):
-		dialogue_presentation = String(cfg.get("dialogue_presentation", dialogue_presentation))
 	if cfg.has("counter_key"):
 		counter_key = String(cfg.get("counter_key", ""))
 	if counter_key == "":
@@ -159,7 +159,6 @@ func _apply_config(cfg: Dictionary) -> void:
 				_dialogues.append({
 					"json_path": String(d.get("json_path", d.get("json", ""))),
 					"start_node": String(d.get("start_node", d.get("start", "start"))),
-					"presentation": String(d.get("presentation", dialogue_presentation)),
 					"bubble_target": d.get("bubble_target", null)
 				})
 	var visual_v: Variant = cfg.get("visual", null)
@@ -250,7 +249,7 @@ func _pick_dialogue() -> Dictionary:
 		if idx >= _dialogues.size():
 			idx = _dialogues.size() - 1
 		return _dialogues[idx]
-	return {"json_path": "", "start_node": "start", "presentation": dialogue_presentation, "bubble_target": null}
+	return {"json_path": "", "start_node": "start", "bubble_target": null}
 
 func _counter_trace_key() -> String:
 	if counter_key == "":

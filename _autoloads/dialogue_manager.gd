@@ -44,9 +44,20 @@ const PRESENTATION_GHOST := "ghost"
 var _default_presentation: String = PRESENTATION_BOX
 var _default_target: Node = null
 var _active_presentation: String = PRESENTATION_BOX
+var _pending_cutscene_after_ids: Array[String] = []
 
 func _ready() -> void:
 	add_to_group("dialogue_manager")
+	dialogue_ended.connect(_on_dialogue_ended)
+
+func _on_dialogue_ended() -> void:
+	if _pending_cutscene_after_ids.is_empty():
+		return
+	var ids := _pending_cutscene_after_ids.duplicate()
+	_pending_cutscene_after_ids.clear()
+	for id in ids:
+		if id != "":
+			CutsceneManager.play_registered(id)
 
 # 加载指定路径的 JSON 对话文件
 func load_dialogue(json_path: String) -> bool:
@@ -157,7 +168,7 @@ func _go_to_node(node_id: String) -> void:
 		var effect_str := String(node_data.get("effect", ""))
 		if effect_str != "":
 			var parts := effect_str.split("|", false, 1)
-			if parts.size() == 2 and parts[0] == "cutscene":
+			if parts.size() == 2 and (parts[0] == "cutscene" or parts[0] == "cutscene_after"):
 				cutscene_auto_end_id = String(parts[1]).strip_edges()
 		_apply_effect(node_data["effect"])
 		
@@ -216,6 +227,10 @@ func _handle_effect(effect_name: String, value: Variant = 0) -> void:
 			var cutscene_id: String = String(value).strip_edges()
 			if cutscene_id != "":
 				CutsceneManager.play_registered(cutscene_id)
+		"cutscene_after":
+			var cutscene_id: String = String(value).strip_edges()
+			if cutscene_id != "":
+				_pending_cutscene_after_ids.append(cutscene_id)
 		_:
 			state_changed.emit(effect_name, _to_int(value))
 

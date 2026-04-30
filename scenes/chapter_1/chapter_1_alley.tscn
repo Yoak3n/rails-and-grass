@@ -3,10 +3,15 @@
 [ext_resource type="Script" uid="uid://co21e8kxcurpu" path="res://scenes/chapter_1/chapter_1_alley.gd" id="1_1blta"]
 [ext_resource type="PackedScene" uid="uid://b6uual7377odi" path="res://scenes/chapter_1/items/iron_pipe.tscn" id="2_lyqtw"]
 [ext_resource type="TileSet" uid="uid://byrg2lha04ajc" path="res://assets/tilesets/floor.tres" id="3_1blta"]
+[ext_resource type="Script" uid="uid://dyepe0vy4d7dw" path="res://core/components/interactable/interactable_dialogue_entry.gd" id="3_fdost"]
 [ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="4_6r3mn"]
 [ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_uls5r"]
 [ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_ti18t"]
 [ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="8_vo20t"]
+
+[sub_resource type="Resource" id="Resource_1gxx5"]
+script = ExtResource("3_fdost")
+metadata/_custom_type_script = "uid://dyepe0vy4d7dw"
 
 [sub_resource type="Gradient" id="Gradient_kjuoy"]
 offsets = PackedFloat32Array(0.084337346, 0.76506025, 1)
@@ -25,8 +30,7 @@ script = ExtResource("1_1blta")
 [node name="IronPipe" parent="." unique_id=1071263566 instance=ExtResource("2_lyqtw")]
 position = Vector2(660, 257)
 item_name = "生锈的铁管"
-dialogue_json_path = "res://dialogues/chapter_1/day1_alley_item.json"
-bubble_target = NodePath(".")
+dialogues = Array[Resource]([SubResource("Resource_1gxx5")])
 
 [node name="Floor" type="TileMapLayer" parent="." unique_id=1729008328]
 z_index = -1
@@ -55,9 +59,6 @@ visible = false
 [node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_ti18t")]
 position = Vector2(368, 215)
 item_name = "垃圾袋"
-dialogue_json_path = "res://dialogues/chapter_1/day1_alley_item.json"
-start_node_id = "trash"
-bubble_target = NodePath(".")
 
 [node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_vo20t")]
 position = Vector2(-105, 32)

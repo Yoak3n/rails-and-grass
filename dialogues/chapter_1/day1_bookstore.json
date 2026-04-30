@@ -22,6 +22,6 @@
 	]
   },
   "end": {
-	"effect" : "cutscene| 1"
+	"effect" : "cutscene_after|1"
   }
 }

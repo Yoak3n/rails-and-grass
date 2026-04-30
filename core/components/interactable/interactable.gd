@@ -22,11 +22,13 @@ func interact(player: Player) -> void:
 	if json_path == "":
 		return
 	var start_node: String = String(picked.get("start_node", "start"))
-	var presentation: String = String(picked.get("presentation", "box"))
 	var picked_bubble_target: NodePath = picked.get("bubble_target", NodePath()) as NodePath
 	var target_node: Node = _resolve_bubble_target_for(picked_bubble_target, player)
 	print("交互触发: ", self.name, " 读取: ", json_path)
-	CutsceneManager.play_dialogue(json_path, start_node, presentation, target_node, self.name)
+	if DialogueManager.load_dialogue(json_path):
+		DialogueManager.start_dialogue(start_node, "box", target_node)
+	else:
+		push_error("Interactable: Failed to load dialogue JSON.")
 	_increment_counter()
 
 func prepare_to_interact() -> void:
@@ -113,7 +115,6 @@ func _pick_dialogue() -> Dictionary:
 	return {
 		"json_path": String(entry.get("json_path")),
 		"start_node": String(entry.get("start_node")),
-		"presentation": String(entry.get("presentation")),
 		"bubble_target": entry.get("bubble_target")
 	}
 

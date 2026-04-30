@@ -10,17 +10,19 @@ const Runner := preload("res://core/components/effects/cutscene/cutscene_effect_
 func start(context: Dictionary) -> void:
 	call_deferred("_run", context)
 
-func _get_duration_from_dialogue(step: Dictionary, dialogue_seq: Array[Dictionary], default_value: float) -> float:
-	var dialogue_index: int = int(step.get("dialogue_index", -1))
-	if dialogue_index >= 0 and dialogue_index < dialogue_seq.size():
-		return Utils.get_float(dialogue_seq[dialogue_index].get("duration", default_value), default_value)
-	return default_value
-
 func _get_step_duration(step: Dictionary, dialogue_seq: Array[Dictionary]) -> float:
-	var d: float = Utils.get_float(step.get("duration", 0.0), 0.0)
+	var d: float = CutsceneUtils.get_float(step.get("duration", 0.0), 0.0)
 	if d > 0.0:
 		return d
-	return maxf(_get_duration_from_dialogue(step, dialogue_seq, 0.01), 0.01)
+	var raw_dialogue: Variant = step.get("dialogue", null)
+	if raw_dialogue is Dictionary:
+		var duration_from_dialogue: float = CutsceneUtils.get_float((raw_dialogue as Dictionary).get("duration", 0.0), 0.0)
+		if duration_from_dialogue > 0.0:
+			return duration_from_dialogue
+	var dialogue_index: int = int(step.get("dialogue_index", -1))
+	if dialogue_index >= 0 and dialogue_index < dialogue_seq.size():
+		return maxf(CutsceneUtils.get_float(dialogue_seq[dialogue_index].get("duration", 0.01), 0.01), 0.01)
+	return 0.01
 
 func _run(context: Dictionary) -> void:
 	var scene := get_tree().current_scene
@@ -64,6 +66,23 @@ func _run(context: Dictionary) -> void:
 	if raw_steps is Array:
 		steps = raw_steps as Array
 
+	var step_dialogue_seq: Array[Dictionary] = []
+	if not steps.is_empty():
+		for raw_step in steps:
+			if not (raw_step is Dictionary):
+				continue
+			var step: Dictionary = raw_step as Dictionary
+			var raw_step_dialogue: Variant = step.get("dialogue", null)
+			if not (raw_step_dialogue is Dictionary):
+				continue
+			var entry: Dictionary = raw_step_dialogue as Dictionary
+			var step_duration: float = CutsceneUtils.get_float(step.get("duration", 0.0), 0.0)
+			if step_duration > 0.0:
+				entry["duration"] = step_duration
+			step_dialogue_seq.append(entry)
+	if step_dialogue_seq.size() > 0:
+		DialogueManager.start_sequence(step_dialogue_seq, "ghost", girl)
+
 	if not steps.is_empty():
 		for raw_step in steps:
 			if not (raw_step is Dictionary):
@@ -83,6 +102,6 @@ func _run(context: Dictionary) -> void:
 		player_cam.make_current()
 	if is_instance_valid(cut_cam):
 		cut_cam.queue_free()
-	if dialogue_seq.size() > 0:
+	if dialogue_seq.size() > 0 or step_dialogue_seq.size() > 0:
 		await DialogueManager.dialogue_ended
 	finished.emit()

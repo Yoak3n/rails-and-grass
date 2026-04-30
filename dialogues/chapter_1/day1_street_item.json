@@ -1,0 +1,32 @@
+{
+	"bookstore": {
+		"speaker": "",
+		"text": "雨水砸在塑料袋上，像有人在里面轻轻拍门。",
+		"presentation": "monologue",
+	},
+	"old_book": {
+		"speaker": "",
+		"text": "封面被潮气泡得发皱，书名看不清。。",
+		"presentation": "monologue",
+	},
+	"bus-stop-sign":{
+		"speaker": "",
+		"text": "七路。终点站，棉纺村。",
+		"presentation": "monologue",
+	},
+	"woven-bag": {
+		"speaker": "",
+		"text": "鼓鼓囊囊，勒痕很深。她应该拖了很久。",
+		"presentation": "monologue",
+	},
+	"awning":{
+		"speaker": "",
+		"text": "滴得很准，地上已经砸出一个小坑。",
+		"presentation": "monologue",		
+	},
+	"bench":{
+		"speaker": "",
+		"text": "长椅一头是湿的，另一头落着几片槐树叶。",
+		"presentation": "monologue",
+	}
+}

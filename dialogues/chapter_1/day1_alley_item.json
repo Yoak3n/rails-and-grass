@@ -1,0 +1,22 @@
+{
+	"trash": {
+		"speaker": "",
+		"text": "雨水砸在塑料袋上，像有人在里面轻轻拍门。",
+		"presentation": "monologue",
+	},
+	"pipe": {
+		"speaker": "",
+		"text": "锈得厉害。再下一阵雨，可能会整根掉下来。拍门。",
+		"presentation": "monologue",
+	},
+	"advertisement":{
+		"speaker": "",
+		"text": "“通下水”“修锁”“代写材料”。字被雨水泡开了一半。",
+		"presentation": "monologue",
+	},
+	"water": {
+		"speaker": "",
+		"text": "水里映出一截灰天，还有我自己。都不太真。",
+		"presentation": "monologue",
+	}
+}

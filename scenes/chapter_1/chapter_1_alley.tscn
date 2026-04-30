@@ -1,12 +1,11 @@
 [gd_scene format=4 uid="uid://bt7ubt723n66w"]
 
 [ext_resource type="Script" uid="uid://co21e8kxcurpu" path="res://scenes/chapter_1/chapter_1_alley.gd" id="1_1blta"]
-[ext_resource type="Texture2D" uid="uid://tljdu18b6a6l" path="res://assets/sprites/environment/Free Sample/Armor_01.png" id="2_fdost"]
+[ext_resource type="PackedScene" uid="uid://b6uual7377odi" path="res://scenes/chapter_1/items/iron_pipe.tscn" id="2_lyqtw"]
 [ext_resource type="TileSet" uid="uid://byrg2lha04ajc" path="res://assets/tilesets/floor.tres" id="3_1blta"]
 [ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="4_6r3mn"]
 [ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_uls5r"]
 [ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_ti18t"]
-[ext_resource type="PackedScene" uid="uid://dw31fyfkqtkkj" path="res://scenes/chapter_1/items/umbrella.tscn" id="7_x7706"]
 [ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="8_vo20t"]
 
 [sub_resource type="Gradient" id="Gradient_kjuoy"]
@@ -23,19 +22,11 @@ fill_to = Vector2(0, 1)
 y_sort_enabled = true
 script = ExtResource("1_1blta")
 
-[node name="Statue" type="Sprite2D" parent="." unique_id=388054941]
+[node name="IronPipe" parent="." unique_id=1071263566 instance=ExtResource("2_lyqtw")]
 position = Vector2(660, 257)
-texture = ExtResource("2_fdost")
-hframes = 4
-frame = 3
-
-[node name="StaticBody2D" type="StaticBody2D" parent="Statue" unique_id=326418535]
-visible = false
-
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Statue/StaticBody2D" unique_id=36131388]
-position = Vector2(2.9999995, 4.999999)
-scale = Vector2(0.97872347, 0.995924)
-polygon = PackedVector2Array(19, -91, -49, -64, -47, 70, -8, 93, 42, 65, 45, -74, -17, -45, -49, -64)
+item_name = "生锈的铁管"
+dialogue_json_path = "res://dialogues/chapter_1/day1_alley_item.json"
+bubble_target = NodePath(".")
 
 [node name="Floor" type="TileMapLayer" parent="." unique_id=1729008328]
 z_index = -1
@@ -62,10 +53,11 @@ texture = SubResource("GradientTexture2D_lxoul")
 visible = false
 
 [node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_ti18t")]
-position = Vector2(546, 326)
-
-[node name="Umbrella" parent="." unique_id=723840651 instance=ExtResource("7_x7706")]
-position = Vector2(369, 322)
+position = Vector2(368, 215)
+item_name = "垃圾袋"
+dialogue_json_path = "res://dialogues/chapter_1/day1_alley_item.json"
+start_node_id = "trash"
+bubble_target = NodePath(".")
 
 [node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_vo20t")]
 position = Vector2(-105, 32)

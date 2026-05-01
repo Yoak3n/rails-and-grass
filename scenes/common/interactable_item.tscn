@@ -1,14 +1,14 @@
-[gd_scene format=3]
+[gd_scene format=3 uid="uid://28g6o6k2axcn"]
 
-[ext_resource type="Script" path="res://scenes/common/interactable_item.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://4avyu07buro6" path="res://scenes/common/interactable_item.gd" id="1_script"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(64, 64)
 
-[node name="InteractableItem" type="Area2D"]
+[node name="InteractableItem" type="Area2D" unique_id=216901865]
 script = ExtResource("1_script")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=360213511]
 shape = SubResource("RectangleShape2D_1")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2040425684]

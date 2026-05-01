@@ -90,9 +90,6 @@ func _ready() -> void:
 		name_label.position.x = label_x_offset
 	
 	name_label.modulate = Color(1, 1, 1, 0)
-	
-	# body_entered.connect(_on_body_entered)
-	# body_exited.connect(_on_body_exited)
 
 func _resolve_bubble_target_for(path: NodePath, player: Player) -> Node:
 	if path != NodePath():

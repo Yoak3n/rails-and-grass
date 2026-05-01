@@ -4,6 +4,7 @@ extends Node2D
 @onready var camera = $PlayerRng/Camera2D
 @onready var dialogue_ui = $CanvasLayer/DialogueUI
 func _ready() -> void:
+	GameUI.show_ui()
 	dialogue_ui.visible = true
 	if SceneManager.transition_finished.is_connected(_on_level_entered):
 		SceneManager.transition_finished.disconnect(_on_level_entered)

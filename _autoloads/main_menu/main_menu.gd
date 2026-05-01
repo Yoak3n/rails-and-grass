@@ -11,6 +11,7 @@ var fade_tween: Tween
 var current_open_panel: Control = null
 
 func _ready() -> void:
+	ui_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	hide_ui(0.0)
 	log_panel.hide()
 	setting_menu.hide()

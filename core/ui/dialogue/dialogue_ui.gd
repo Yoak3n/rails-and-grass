@@ -2,22 +2,30 @@ extends Control
 class_name DialogueUI
 
 const _BUBBLE_SCENE: PackedScene = preload("res://core/ui/dialogue/dialogue_bubble.tscn")
+const _BUBBLE_STACK_Y_START: float = -110.0
+const _BUBBLE_STACK_Y_STEP: float = 56.0
+const _TABOO_BOX_SHATTER_SECONDS: float = 1.0
+const _TABOO_BOX_REVEAL_SECONDS: float = 1.2
+const _TABOO_BUBBLE_SHATTER_SECONDS: float = 1.0
+const _TABOO_BUBBLE_REVEAL_SECONDS: float = 1.6
 
 @onready var _ui_panel: PanelContainer = $PanelContainer
 @onready var _ui_text_label: RichTextLabel = $PanelContainer/MarginContainer/HBoxContainer/RichTextLabel
-@onready var _ui_options_container: VBoxContainer = $PanelContainer/MarginContainer/HBoxContainer/OptionsContainer
+@onready var _ui_options_container: VBoxContainer = $OptionsContainer
 @onready var _taboo_flash_rect: ColorRect = $TabooFlashRect
 
 var _is_taboo_triggering: bool = false
 var _active_presentation: String = "box"
 
 var _bubble_targets: Array[Node] = []
-var _bubbles_by_target: Dictionary = {}
+var _bubbles_by_key: Dictionary = {}
 var _last_bubble_target: Node = null
 
 # --- 打字机与状态控制 ---
 var _is_typing: bool = false
 var _is_waiting_for_click: bool = false
+var _is_next_node_advance: bool = false
+var _pending_taboo_continue: bool = false
 var _current_options: Array = []
 var _current_next_node: String = ""
 var _current_duration: float = 0.0
@@ -81,8 +89,14 @@ func _input(event: InputEvent) -> void:
 		# 状态 2：打字完毕，正在等待玩家点击继续 -> 推进到下一句或结束
 	if _is_waiting_for_click:
 		_is_waiting_for_click = false
+		if _pending_taboo_continue:
+			_pending_taboo_continue = false
+			_is_taboo_triggering = false
+			DialogueManager.proceed_after_taboo()
+			return
 		if _current_next_node != "":
 			# 有 next_node，通知 Manager 直接跳过去
+			_is_next_node_advance = true
 			DialogueManager._go_to_node(_current_next_node)
 		else:
 			# 没有 next_node 也没有 options，说明是真结束了
@@ -106,6 +120,8 @@ func _finish_typing() -> void:
 
 # --- 信号响应 ---
 func _on_text_ready(speaker: String, text: String, presentation: String, target: Node, next_node_id: String, duration: float) -> void:
+	var was_auto_advance := _is_next_node_advance
+	_is_next_node_advance = false
 	# cache
 	_active_presentation = presentation
 	_current_next_node = next_node_id
@@ -126,15 +142,19 @@ func _on_text_ready(speaker: String, text: String, presentation: String, target:
 		"box":
 			if _ui_panel:
 				_ui_panel.visible = true
+			if was_auto_advance:
+				_clear_bubbles_immediately(_bubble_key(target, "monologue"))
+				_clear_bubbles_immediately(_bubble_key(target, "ghost"))
 			_apply_text_with_type_plan(_ui_text_label, full_text)
 			_ui_text_label.visible_characters = 0 # 隐藏文字，准备开始打字
 				
 		"monologue":
 			if _ui_panel:
 				_ui_panel.visible = false
-			# 尝试寻找玩家节点挂载气泡，如果没有提供 target
 			if not target:
 				target = get_tree().get_first_node_in_group("player")
+			if was_auto_advance:
+				_clear_bubbles_immediately(_bubble_key(target, "monologue"))
 			_spawn_bubble(text, target, "monologue", _current_duration)
 			_last_bubble_target = target
 			_is_typing = false
@@ -142,6 +162,8 @@ func _on_text_ready(speaker: String, text: String, presentation: String, target:
 		"ghost":
 			if _ui_panel:
 				_ui_panel.visible = false
+			if was_auto_advance:
+				_clear_bubbles_immediately(_bubble_key(target, "ghost"))
 			_spawn_bubble(full_text, target, "ghost", _current_duration)
 			_last_bubble_target = target
 			_is_typing = false
@@ -173,6 +195,7 @@ func _render_options_or_wait() -> void:
 					return
 				_is_waiting_for_click = false
 				if _current_next_node != "":
+					_is_next_node_advance = true
 					DialogueManager._go_to_node(_current_next_node)
 				else:
 					DialogueManager.dialogue_ended.emit()
@@ -191,7 +214,7 @@ func _render_options_or_wait() -> void:
 		btn.add_theme_font_size_override("font_size", 24)
 		var opt_type := String(opt.get("type", "normal"))
 		match opt_type:
-			"taboo": btn.modulate = Color(1.0, 0.5, 0.5)
+			"taboo": btn.text = String(opt.get("original_text","???"))
 			"hidden": btn.modulate = Color(0.7, 0.7, 0.7)
 			"action": btn.modulate = Color(0.8, 1.0, 0.8)
 		btn.pressed.connect(func(): _on_option_clicked(opt))
@@ -205,6 +228,7 @@ func _on_option_clicked(option_data: Dictionary) -> void:
 
 func _on_taboo_triggered(original_text: String, replacement_text: String, presentation: String) -> void:
 	_is_taboo_triggering = true
+	_pending_taboo_continue = false
 	var head := original_text.substr(0, mini(4, original_text.length()))
 	
 	# 触发全屏闪红特效
@@ -222,20 +246,24 @@ func _on_taboo_triggered(original_text: String, replacement_text: String, presen
 		_ui_text_label.parse_bbcode("[color=#ff5555]" + head + "[/color][shake rate=50.0 level=20 connected=1]......[/shake]")
 		
 		# 演出：触发相机的屏幕震动（需确保场景里有对应方法，这里仅作文字表现）
-		var t1 := get_tree().create_timer(1.0)
+		var t1 := get_tree().create_timer(_TABOO_BOX_SHATTER_SECONDS)
 		await t1.timeout
 		
 		_ui_text_label.parse_bbcode(replacement_text)
 		
-		var t2 := get_tree().create_timer(1.0)
+		var t2 := get_tree().create_timer(_TABOO_BOX_REVEAL_SECONDS)
 		await t2.timeout
+		_is_waiting_for_click = true
+		_pending_taboo_continue = true
+		_ui_text_label.append_text(" [color=#888888]▼[/color]")
+		return
 	else:
-		_spawn_bubble(head + "......", _last_bubble_target, presentation, 0.8)
-		var t1 := get_tree().create_timer(0.8)
+		_spawn_bubble(head + "......", _last_bubble_target, presentation, _TABOO_BUBBLE_SHATTER_SECONDS)
+		var t1 := get_tree().create_timer(_TABOO_BUBBLE_SHATTER_SECONDS)
 		await t1.timeout
 		
-		_spawn_bubble(replacement_text, _last_bubble_target, presentation, 0.8)
-		var t2 := get_tree().create_timer(0.8)
+		_spawn_bubble(replacement_text, _last_bubble_target, presentation, _TABOO_BUBBLE_REVEAL_SECONDS)
+		var t2 := get_tree().create_timer(_TABOO_BUBBLE_REVEAL_SECONDS)
 		await t2.timeout
 		
 	_is_taboo_triggering = false
@@ -251,6 +279,11 @@ func _on_dialogue_ended() -> void:
 	if _ui_text_label:
 		_ui_text_label.clear()
 	_ui_clear_options()
+	var all_keys := _bubbles_by_key.keys()
+	for k in all_keys:
+		_clear_bubbles_immediately(k)
+	_bubble_targets.clear()
+	_last_bubble_target = null
 
 # --- UI 辅助方法 ---
 func _ui_clear_options() -> void:
@@ -275,36 +308,87 @@ func _play_taboo_flash_effect() -> void:
 	await tween.finished
 	_taboo_flash_rect.visible = false
 
-func _get_bubble_stack(target: Node) -> Array:
-	if not _bubbles_by_target.has(target):
-		_bubbles_by_target[target] = []
-	return _bubbles_by_target[target] as Array
+func _bubble_key(target: Node, presentation: String) -> String:
+	if target == null:
+		return ""
+	return "%s|%s" % [str(target.get_instance_id()), presentation]
 
-func _layout_bubbles(target: Node, animate: bool) -> void:
-	if target == null or not _bubbles_by_target.has(target):
+func _get_bubble_stack(key: String) -> Array:
+	if not _bubbles_by_key.has(key):
+		_bubbles_by_key[key] = []
+	return _bubbles_by_key[key] as Array
+
+func _get_bubble_text(bubble: Control) -> String:
+	var label := bubble.get_node_or_null("BubbleLabel") as RichTextLabel
+	if label:
+		return label.get_parsed_text()
+	return ""
+
+func _layout_bubbles(key: String, _animate: bool) -> void:
+	if key == "" or not _bubbles_by_key.has(key):
 		return
-	var stack := _bubbles_by_target[target] as Array
-	var duration: float = 0.12
+	var stack := _bubbles_by_key[key] as Array
 	for i in range(stack.size()):
 		var bubble: Control = stack[i] as Control
 		if bubble == null or not is_instance_valid(bubble):
 			continue
 		if not bubble.has_method("set_anchor_offset"):
 			continue
-		var offset := Vector2(0.0, -110.0 - float(i) * 92.0)
+		var offset := Vector2(0.0, _BUBBLE_STACK_Y_START - float(i) * _BUBBLE_STACK_Y_STEP)
 		bubble.call("set_anchor_offset", offset)
 		if bubble.has_method("request_sync"):
 			bubble.call("request_sync")
-		var desired_pos := Vector2(-float(bubble.size.x) * 0.5 + offset.x, offset.y)
-		if animate:
-			var tw := create_tween()
-			tw.tween_property(bubble, "position", desired_pos, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
-		else:
-			bubble.position = desired_pos
+
+func _clear_bubbles_immediately(key: String) -> void:
+	if key == "" or not _bubbles_by_key.has(key):
+		return
+	var stack: Array = _bubbles_by_key[key]
+	for bubble in stack:
+		if bubble == null or not is_instance_valid(bubble):
+			continue
+		var tw: Tween = bubble.get_meta("_life_tween", null) as Tween
+		if tw != null and tw.is_valid():
+			tw.kill()
+		bubble.queue_free()
+	stack.clear()
+	_bubbles_by_key.erase(key)
 
 func _spawn_bubble(text: String, target: Node, presentation: String, duration: float) -> void:
 	if target == null or not (target is CanvasItem):
 		return
+	var key: String = _bubble_key(target, presentation)
+	var stack2 := _get_bubble_stack(key)
+	if not _bubble_targets.has(target):
+		_bubble_targets.append(target)
+
+	if stack2.size() > 0:
+		var top_bubble: Control = stack2[0] as Control
+		if top_bubble != null and is_instance_valid(top_bubble):
+			var existing_text := _get_bubble_text(top_bubble)
+			if existing_text == text:
+				var top_label := top_bubble.get_node_or_null("BubbleLabel") as RichTextLabel
+				if top_label:
+					_apply_text_with_type_plan(top_label, text)
+					top_label.visible_characters = -1
+				if top_bubble.has_method("request_sync"):
+					top_bubble.call("request_sync")
+				var old_tween: Tween = top_bubble.get_meta("_life_tween", null) as Tween
+				if old_tween != null and old_tween.is_valid():
+					old_tween.kill()
+				top_bubble.modulate.a = 1.0
+				var replace_tween := create_tween()
+				top_bubble.set_meta("_life_tween", replace_tween)
+				var replace_life := maxf(duration, 0.0)
+				if replace_life > 0.0:
+					var replace_fade_out := 0.18
+					var replace_wait := maxf(replace_life - replace_fade_out, 0.0)
+					replace_tween.tween_interval(replace_wait)
+					replace_tween.tween_property(top_bubble, "modulate:a", 0.0, replace_fade_out)
+				replace_tween.finished.connect(func():
+					_remove_bubble(key, top_bubble, target)
+				, CONNECT_ONE_SHOT)
+				return
+
 	var bubble := _BUBBLE_SCENE.instantiate() as Control
 	if bubble == null:
 		return
@@ -315,41 +399,39 @@ func _spawn_bubble(text: String, target: Node, presentation: String, duration: f
 	bubble.z_as_relative = false
 	if bubble.has_method("set_presentation"):
 		bubble.call("set_presentation", presentation)
-	var label := bubble.get_node_or_null("BubbleLabel") as RichTextLabel
-	if label:
-		_apply_text_with_type_plan(label, text)
-		label.visible_characters = -1
+	var new_label := bubble.get_node_or_null("BubbleLabel") as RichTextLabel
+	if new_label:
+		_apply_text_with_type_plan(new_label, text)
+		new_label.visible_characters = -1
 	target.add_child(bubble)
 	if bubble.has_method("request_sync"):
 		bubble.call("request_sync")
-	var stack2 := _get_bubble_stack(target)
 	stack2.insert(0, bubble)
-	_layout_bubbles(target, true)
-	if not _bubble_targets.has(target):
-		_bubble_targets.append(target)
+	_layout_bubbles(key, true)
 	bubble.modulate.a = 0.0
 	bubble.visible = true
-	var tween := create_tween()
-	tween.tween_property(bubble, "modulate:a", 1.0, 0.12)
-	var life := maxf(duration, 0.0)
-	if life > 0.0:
-		var fade_out := 0.18
-		var wait := maxf(life - fade_out, 0.0)
-		tween.tween_interval(wait)
-		tween.tween_property(bubble, "modulate:a", 0.0, fade_out)
-	tween.finished.connect(func():
-		_remove_bubble(target, bubble)
+	var new_tween := create_tween()
+	bubble.set_meta("_life_tween", new_tween)
+	new_tween.tween_property(bubble, "modulate:a", 1.0, 0.12)
+	var new_life := maxf(duration, 0.0)
+	if new_life > 0.0:
+		var new_fade_out := 0.3
+		var new_wait := maxf(new_life - new_fade_out, 0.0)
+		new_tween.tween_interval(new_wait)
+		new_tween.tween_property(bubble, "modulate:a", 0.0, new_fade_out)
+	new_tween.finished.connect(func():
+		_remove_bubble(key, bubble, target)
 	, CONNECT_ONE_SHOT)
 
-func _remove_bubble(target: Node, bubble: Control) -> void:
-	if target != null and _bubbles_by_target.has(target):
-		var stack := _bubbles_by_target[target] as Array
+func _remove_bubble(key: String, bubble: Control, target: Node) -> void:
+	if key != "" and _bubbles_by_key.has(key):
+		var stack := _bubbles_by_key[key] as Array
 		var idx := stack.find(bubble)
 		if idx != -1:
 			stack.remove_at(idx)
-		_layout_bubbles(target, true)
+		_layout_bubbles(key, true)
 		if stack.is_empty():
-			_bubbles_by_target.erase(target)
+			_bubbles_by_key.erase(key)
 			_bubble_targets.erase(target)
 	if bubble != null and is_instance_valid(bubble):
 		bubble.queue_free()

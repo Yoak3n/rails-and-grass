@@ -1,32 +1,104 @@
 {
-	"bookstore": {
+	"bookstore_1": {
 		"speaker": "",
-		"text": "雨水砸在塑料袋上，像有人在里面轻轻拍门。",
+		"text": "门关着。卷帘门边角被人反复推过，掉了一层漆。",
 		"presentation": "monologue",
+		"next_node": "bookstore_2"
 	},
+	"bookstore_2": {
+		"speaker": "",
+		"text": "像是关了很久，又像随时会重新打开。",
+		"presentation": "monologue",
+		"next_node": "bookstore_3"
+	},
+	"bookstore_3": {
+		"speaker": "",
+		"text": "你站在一家关门的书店门口避雨。雨幕把整条街浇成一片模糊的灰绿色。",
+		"presentation": "box",
+		"next_node": "bookstore_4"
+	},
+	"bookstore_4": {
+		"speaker": "",
+		"text": "然后你看见了那把伞。[type delay=2]鹅黄色的伞。[/type]",
+		"presentation": "box",
+		"effect": "cutscene_after|1"
+	},
+
 	"old_book": {
 		"speaker": "",
 		"text": "封面被潮气泡得发皱，书名看不清。。",
-		"presentation": "monologue",
+		"presentation": "monologue"
 	},
 	"bus-stop-sign":{
 		"speaker": "",
 		"text": "七路。终点站，棉纺村。",
-		"presentation": "monologue",
+		"presentation": "monologue"
 	},
 	"woven-bag": {
 		"speaker": "",
 		"text": "鼓鼓囊囊，勒痕很深。她应该拖了很久。",
-		"presentation": "monologue",
+		"presentation": "monologue"
 	},
 	"awning":{
 		"speaker": "",
 		"text": "滴得很准，地上已经砸出一个小坑。",
-		"presentation": "monologue",		
+		"presentation": "monologue"
 	},
 	"bench":{
 		"speaker": "",
 		"text": "长椅一头是湿的，另一头落着几片槐树叶。",
-		"presentation": "monologue",
+		"presentation": "monologue"
+	},
+
+	"umbrella_ghost_1": {
+		"speaker": "",
+		"text": "（她抬头，隔着雨幕看向你。）",
+		"presentation": "ghost",
+		"duration": 3.5
+	},
+	"umbrella_ghost_2": {
+		"speaker": "",
+		"text": "（几秒后，她朝你走来。）",
+		"presentation": "ghost",
+		"duration": 3.5
+	},
+	"umbrella_ask": {
+		"speaker": "少女",
+		"text": "你没伞？",
+		"presentation": "box",
+		"options": [
+			{
+				"text": "没有。",
+				"next": "umbrella_reply_1"
+			},
+			{
+				"text": "出门急，忘带了。",
+				"next": "umbrella_reply_2"
+			},
+			{
+				"original_text": "你不用管我。",
+				"text": "没有。",
+				"type": "taboo",
+				"next": "umbrella_taboo"
+			}
+		]
+	},
+	"umbrella_reply_1": {
+		"speaker": "少女",
+		"text": "……",
+		"presentation": "box",
+		"options": []
+	},
+	"umbrella_reply_2": {
+		"speaker": "少女",
+		"text": "雨大。别站着了。",
+		"presentation": "box",
+		"options": []
+	},
+	"umbrella_taboo": {
+		"speaker": "少女",
+		"text": "……",
+		"presentation": "box",
+		"options": []
 	}
 }

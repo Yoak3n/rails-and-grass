@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var data_json_path: String = ""
+@export_file_path("*.json") var data_json_path: String = ""
 @export var data_node: String = ""
 
 var item_name: String = "未命名物品"
@@ -191,6 +191,8 @@ func _apply_visual() -> void:
 			var tex := load(texture_path)
 			if tex is Texture2D:
 				sprite.texture = tex as Texture2D
+		else:
+			sprite.texture = PlaceholderTexture2D.new()
 		var mod_v: Variant = _visual_cfg.get("modulate", null)
 		if mod_v is Array:
 			var a: Array = mod_v as Array

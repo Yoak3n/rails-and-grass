@@ -7,11 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://cydgbvv6v5xmi" path="res://core/characters/player/player_rng.tscn" id="4_6r3mn"]
 [ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="5_uls5r"]
 [ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_ti18t"]
+[ext_resource type="PackedScene" path="res://scenes/common/interactable_item.tscn" id="8_fdost"]
 [ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="8_vo20t"]
-
-[sub_resource type="Resource" id="Resource_1gxx5"]
-script = ExtResource("3_fdost")
-metadata/_custom_type_script = "uid://dyepe0vy4d7dw"
 
 [sub_resource type="Gradient" id="Gradient_kjuoy"]
 offsets = PackedFloat32Array(0.084337346, 0.76506025, 1)
@@ -23,14 +20,30 @@ fill = 1
 fill_from = Vector2(0.5, 0.5173913)
 fill_to = Vector2(0, 1)
 
+[sub_resource type="Resource" id="Resource_1gxx5"]
+script = ExtResource("3_fdost")
+json_path = "res://dialogues/chapter_1/day1_alley_item.json"
+start_node = "trash"
+bubble_target = NodePath(".")
+metadata/_custom_type_script = "uid://dyepe0vy4d7dw"
+
+[sub_resource type="Resource" id="Resource_1blta"]
+script = ExtResource("3_fdost")
+json_path = "res://dialogues/chapter_1/day1_alley_item.json"
+start_node = "pipe1"
+bubble_target = NodePath(".")
+metadata/_custom_type_script = "uid://dyepe0vy4d7dw"
+
+[sub_resource type="Resource" id="Resource_fdost"]
+script = ExtResource("3_fdost")
+json_path = "res://dialogues/chapter_1/day1_alley_item.json"
+start_node = "pipe2"
+bubble_target = NodePath(".")
+metadata/_custom_type_script = "uid://dyepe0vy4d7dw"
+
 [node name="Chapter1Alley" type="Node2D" unique_id=1438240935]
 y_sort_enabled = true
 script = ExtResource("1_1blta")
-
-[node name="IronPipe" parent="." unique_id=1071263566 instance=ExtResource("2_lyqtw")]
-position = Vector2(660, 257)
-item_name = "生锈的铁管"
-dialogues = Array[Resource]([SubResource("Resource_1gxx5")])
 
 [node name="Floor" type="TileMapLayer" parent="." unique_id=1729008328]
 z_index = -1
@@ -56,10 +69,29 @@ texture = SubResource("GradientTexture2D_lxoul")
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_uls5r")]
 visible = false
 
-[node name="Trash" parent="." unique_id=1884696071 instance=ExtResource("6_ti18t")]
-position = Vector2(368, 215)
-item_name = "垃圾袋"
-
 [node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_vo20t")]
 position = Vector2(-105, 32)
 item_name = "巷口"
+
+[node name="Items" type="Node2D" parent="." unique_id=673198911]
+
+[node name="Trash" parent="Items" unique_id=1884696071 instance=ExtResource("6_ti18t")]
+position = Vector2(368, 215)
+item_name = "垃圾袋"
+dialogues = Array[Resource]([SubResource("Resource_1gxx5")])
+
+[node name="Advertisement" parent="Items" unique_id=1340104058 instance=ExtResource("8_fdost")]
+position = Vector2(189, 98)
+data_json_path = "res://scenes/chapter_1/data/items.json"
+data_node = "advertisement"
+
+[node name="Water" parent="Items" unique_id=1935407153 instance=ExtResource("8_fdost")]
+position = Vector2(40, 153)
+data_json_path = "res://scenes/chapter_1/data/items.json"
+data_node = "water"
+
+[node name="IronPipe" parent="Items" unique_id=1071263566 instance=ExtResource("2_lyqtw")]
+position = Vector2(660, 257)
+item_name = "生锈的铁管"
+label_x_offset = 50.0
+dialogues = Array[Resource]([SubResource("Resource_1blta"), SubResource("Resource_fdost")])

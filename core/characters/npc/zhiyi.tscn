@@ -1,10 +1,14 @@
 [gd_scene format=3 uid="uid://cmu5won3ykgxq"]
 
+[ext_resource type="Script" uid="uid://cn7agh0a4tmvm" path="res://core/characters/npc/zhiyi.gd" id="1_cq6dg"]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_0hg16"]
 radius = 15.0
 height = 42.0
 
 [node name="Zhiyi" type="CharacterBody2D" unique_id=491426857]
+script = ExtResource("1_cq6dg")
+label_x_offset = -25.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=34033088]
 position = Vector2(0, -21)

@@ -279,7 +279,10 @@ func _lock_player_movement() -> void:
 	var players := get_tree().get_nodes_in_group("player")
 	for p in players:
 		if p:
-			p.set("can_move", false)
+			if p.has_method("lock_movement"):
+				p.call("lock_movement", "cutscene")
+			else:
+				p.set("can_move", false)
 
 func _unlock_player_movement() -> void:
 	_player_lock_count = maxi(_player_lock_count - 1, 0)
@@ -288,4 +291,7 @@ func _unlock_player_movement() -> void:
 	var players := get_tree().get_nodes_in_group("player")
 	for p in players:
 		if p:
-			p.set("can_move", true)
+			if p.has_method("unlock_movement"):
+				p.call("unlock_movement", "cutscene")
+			else:
+				p.set("can_move", true)

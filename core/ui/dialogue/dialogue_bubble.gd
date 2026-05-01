@@ -92,9 +92,13 @@ func set_presentation(presentation: String) -> void:
 			if _bg_style:
 				_bg_style.bg_color = Color(0, 0, 0, 0.58)
 		"ghost":
-			label.add_theme_color_override("default_color", Color(0.75, 0.82, 0.92, 0.78))
-			if _bg_style:
-				_bg_style.bg_color = Color(0.10, 0.14, 0.20, 0.45)
+			label.add_theme_color_override("default_color", Color(1.0, 1.0, 1.0, 0.9))
+			label.add_theme_constant_override("outline_size", 4)
+			label.add_theme_color_override("font_outline_color", Color(0.0, 0.0, 0.0, 0.85))
+			label.modulate = Color(1, 1, 1, 1.0)
+			var bg_node := _get_bg()
+			if bg_node:
+				bg_node.visible = false
 		_:
 			label.add_theme_color_override("default_color", Color(1, 1, 1, 1))
 			if _bg_style:

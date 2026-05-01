@@ -38,10 +38,11 @@ func _run(context: Dictionary) -> void:
 		finished.emit()
 		return
 	var girl_node: String = String(context.get("girl_node", "Zhiyi"))
-	var girl := scene.get_node_or_null(NodePath(girl_node)) as Node2D
+	var girl :Zhiyi= scene.get_node_or_null(NodePath(girl_node)) as Node2D
 	if girl == null:
 		finished.emit()
 		return
+	
 	var visual_node: String = String(context.get("girl_visual_node", "Polygon2D"))
 	var player_cam := player.get_node_or_null("Camera2D") as Camera2D
 	var cut_cam := Camera2D.new()
@@ -59,29 +60,11 @@ func _run(context: Dictionary) -> void:
 		for item in raw_dialogue as Array:
 			if item is Dictionary:
 				dialogue_seq.append(item as Dictionary)
-	if dialogue_seq.size() > 0:
-		DialogueManager.start_sequence(dialogue_seq, "ghost", girl)
+	girl.current_state = Zhiyi.State.CUTSCENE
 	var steps: Array = []
 	var raw_steps: Variant = context.get("steps", [])
 	if raw_steps is Array:
 		steps = raw_steps as Array
-
-	var step_dialogue_seq: Array[Dictionary] = []
-	if not steps.is_empty():
-		for raw_step in steps:
-			if not (raw_step is Dictionary):
-				continue
-			var step: Dictionary = raw_step as Dictionary
-			var raw_step_dialogue: Variant = step.get("dialogue", null)
-			if not (raw_step_dialogue is Dictionary):
-				continue
-			var entry: Dictionary = raw_step_dialogue as Dictionary
-			var step_duration: float = CutsceneUtils.get_float(step.get("duration", 0.0), 0.0)
-			if step_duration > 0.0:
-				entry["duration"] = step_duration
-			step_dialogue_seq.append(entry)
-	if step_dialogue_seq.size() > 0:
-		DialogueManager.start_sequence(step_dialogue_seq, "ghost", girl)
 
 	if not steps.is_empty():
 		for raw_step in steps:
@@ -89,8 +72,27 @@ func _run(context: Dictionary) -> void:
 				continue
 			var step: Dictionary = raw_step as Dictionary
 			var step_duration: float = _get_step_duration(step, dialogue_seq)
+			var raw_step_dialogue: Variant = step.get("dialogue", null)
+			var has_dialogue: bool = raw_step_dialogue is Dictionary
 			Runner.schedule_effects(scene, girl, player, cut_cam, cam_offset, step, step_duration, context, visual_node, _held_props)
-			await get_tree().create_timer(step_duration).timeout
+			if has_dialogue:
+				var entry: Dictionary = raw_step_dialogue as Dictionary
+				var json_path: String = String(entry.get("json_path", "")).strip_edges()
+				var start_node: String = String(entry.get("start_node", "start")).strip_edges()
+				var pres: String = String(entry.get("presentation", "")).strip_edges()
+				if json_path != "":
+					if DialogueManager.load_dialogue(json_path):
+						DialogueManager.start_dialogue(start_node, pres if pres != "" else "box", girl)
+						await DialogueManager.dialogue_ended
+					else:
+						await get_tree().create_timer(step_duration).timeout
+				else:
+					var seq: Array[Dictionary] = [entry]
+					var seq_pres: String = pres if pres != "" else String(entry.get("presentation", "ghost"))
+					DialogueManager.start_sequence(seq, seq_pres, girl)
+					await DialogueManager.dialogue_ended
+			else:
+				await get_tree().create_timer(step_duration).timeout
 	else:
 		var fallback_step: Dictionary = {
 			"duration": 0.01,
@@ -102,6 +104,6 @@ func _run(context: Dictionary) -> void:
 		player_cam.make_current()
 	if is_instance_valid(cut_cam):
 		cut_cam.queue_free()
-	if dialogue_seq.size() > 0 or step_dialogue_seq.size() > 0:
-		await DialogueManager.dialogue_ended
 	finished.emit()
+	girl.current_state = Zhiyi.State.PLAYING
+	CutsceneManager.unregister("1")

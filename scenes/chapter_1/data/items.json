@@ -1,0 +1,47 @@
+{
+	"water": {
+		"item_name": "水洼",
+		"fade_time": 0.3,
+		"label_offset":{
+			"x": 0,
+			"y": 0
+		},
+		"bubble_target":"",
+		"counter_key": "",
+		"visual": {
+			"type": "sprite2d"
+		},
+		"dialogues": [
+			{
+				"json_path": "res://dialogues/chapter_1/day1_alley_item.json",
+				"start_node": "water1",
+				"bubble_target": ""
+			},{
+				"json_path": "res://dialogues/chapter_1/day1_alley_item.json",
+				"start_node": "water2",
+				"bubble_target": ""
+			}
+		]
+	},
+	"advertisement": {
+		"item_name": "小广告",
+		"fade_time": 0.3,
+		"label_offset":{
+			"x": 0,
+			"y": 0
+		},
+		"bubble_target":".",
+		"counter_key": "",
+		"visual": {
+			"type": "sprite2d"
+		},
+		"dialogues": [
+			{
+				"json_path": "res://dialogues/chapter_1/day1_alley_item.json",
+				"start_node": "advertisement",
+				"bubble_target": ""
+			}
+		]
+	}
+
+}

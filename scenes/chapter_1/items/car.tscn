@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://blgkjx80c4xn4"]
+
+[ext_resource type="Script" uid="uid://0xffddu7thij" path="res://scenes/chapter_1/scripts/car.gd" id="1_rnqgf"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_63n12"]
+viewport_path = NodePath("SubViewport")
+
+[node name="Car" type="Area2D" unique_id=1078424759]
+script = ExtResource("1_rnqgf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1567318827]
+position = Vector2(1, -31.99997)
+scale = Vector2(0.16908845, 0.16406246)
+texture = SubResource("ViewportTexture_63n12")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="." unique_id=907988968]
+position = Vector2(-590, -401)
+polygon = PackedVector2Array(610, 325, 531, 371, 531, 391, 559, 408, 651, 359, 651, 340, 625, 326)

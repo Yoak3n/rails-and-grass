@@ -85,20 +85,29 @@
 	},
 	"umbrella_reply_1": {
 		"speaker": "少女",
-		"text": "……",
+		"text": "(她点一下头，不再追问。)",
 		"presentation": "box",
 		"options": []
 	},
 	"umbrella_reply_2": {
 		"speaker": "少女",
-		"text": "雨大。别站着了。",
+		"text": "(少女看了他一眼，像是觉得这话有点怪，但仍没问)",
 		"presentation": "box",
 		"options": []
 	},
 	"umbrella_taboo": {
 		"speaker": "少女",
-		"text": "……",
+		"text": "（少女微微皱眉，看他脸色，以为他淋雨太久有些恍惚。)",
 		"presentation": "box",
-		"options": []
+		"next_node": "umbrella_separate"
+	},
+	"umbrella_separate":{
+		"speaker": "程砚",
+		"text": "[type speed=2]......[/type]",
+		"next_node" : "umbrella_recognize"
+	},
+	"umbrella_recognize":{
+		"speaker": "程砚",
+		"text": "刚刚......[type delay=1]是[/type]怎么回事？"
 	}
 }

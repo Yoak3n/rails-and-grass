@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://b1tbf5uos3b7h"]
+
+[ext_resource type="ArrayMesh" uid="uid://mvg6xsogw7rv" path="res://assets/models/shop/Shop-3-Car.obj" id="1_r8ssk"]
+
+[node name="Car" type="Node3D" unique_id=1722998083]
+
+[node name="Shop3Car" type="MeshInstance3D" parent="." unique_id=1192925005]
+transform = Transform3D(-0.007260541, 0, -0.99997365, 0, 1, 0, 0.99997365, 0, -0.007260541, -0.26872683, 0, 0.41000223)
+mesh = ExtResource("1_r8ssk")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="." unique_id=1892046501]
+shadow_enabled = false
+light_energy = 2.0
+rotation_degrees = Vector3(-60, 45, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=97573379]
+transform = Transform3D(0.7071068, -0.40860704, 0.5770964, 0, 0.8161376, 0.5778576, -0.7071068, -0.40860704, 0.5770964, 5.537462, 5.4730463, 6.066591)
+projection = 1
+current = true
+size = 3.473549

@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 @onready var player: Player = $PlayerRng
 @onready var camera = $PlayerRng/Camera2D

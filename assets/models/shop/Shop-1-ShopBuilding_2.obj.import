@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://c1dwtd0j2ycfd"
+path="res://.godot/imported/Shop-1-ShopBuilding_2.obj-b2e4bf28f928238c880c84e9cc14abaf.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Shop-1-ShopBuilding_2.obj-b2e4bf28f928238c880c84e9cc14abaf.mesh"]
+
+source_file="res://assets/models/shop/Shop-1-ShopBuilding_2.obj"
+dest_files=["res://.godot/imported/Shop-1-ShopBuilding_2.obj-b2e4bf28f928238c880c84e9cc14abaf.mesh", "res://.godot/imported/Shop-1-ShopBuilding_2.obj-b2e4bf28f928238c880c84e9cc14abaf.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

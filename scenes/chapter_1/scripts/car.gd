@@ -17,6 +17,7 @@ var _pause_event_id: int = 0
 var _cooldown: float = 0.0
 var _spawn_position: Vector2 = Vector2.ZERO
 var _offscreen_timer: float = 0.0
+var _stop_after_cycle: bool = false
 
 func _ready() -> void:
 	_moving = auto_start
@@ -48,9 +49,10 @@ func reset_to_spawn() -> void:
 
 func start_move() -> void:
 	_moving = true
+	_stop_after_cycle = false
 
 func stop_move() -> void:
-	_moving = false
+	_stop_after_cycle = true
 
 func set_direction(dir: Vector2) -> void:
 	direction = dir
@@ -72,6 +74,9 @@ func pause_for_collision() -> void:
 	pause_for(maxf(collision_pause_seconds + jitter, 0.0))
 
 func _update_offscreen_and_maybe_reset(delta: float) -> void:
+	if not _moving:
+		_offscreen_timer = 0.0
+		return
 	var cam := get_viewport().get_camera_2d()
 	if cam == null:
 		return
@@ -87,6 +92,11 @@ func _update_offscreen_and_maybe_reset(delta: float) -> void:
 		return
 	_offscreen_timer += delta
 	if _offscreen_timer >= maxf(reset_after_offscreen_seconds, 0.0):
+		if _stop_after_cycle:
+			reset_to_spawn()
+			_moving = false
+			_stop_after_cycle = false
+			return
 		reset_to_spawn()
 
 func _on_area_entered(_a: Area2D) -> void:

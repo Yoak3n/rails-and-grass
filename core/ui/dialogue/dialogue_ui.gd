@@ -324,6 +324,19 @@ func _get_bubble_text(bubble: Control) -> String:
 		return label.get_parsed_text()
 	return ""
 
+func _bbcode_to_plain(bbcode_text: String) -> String:
+	if not _bbcode_measure:
+		return bbcode_text
+	_bbcode_measure.parse_bbcode(bbcode_text)
+	return _bbcode_measure.get_parsed_text()
+
+func _apply_text_with_bubble_typewriter(label: RichTextLabel, bbcode_text: String) -> void:
+	if not label:
+		return
+	var s := bbcode_text
+	var spd := maxf(_type_speed_base, 0.001)
+	label.parse_bbcode("[type speed=%s]%s[/type]" % [str(spd), s])
+
 func _layout_bubbles(key: String, _animate: bool) -> void:
 	if key == "" or not _bubbles_by_key.has(key):
 		return
@@ -360,15 +373,16 @@ func _spawn_bubble(text: String, target: Node, presentation: String, duration: f
 	var stack2 := _get_bubble_stack(key)
 	if not _bubble_targets.has(target):
 		_bubble_targets.append(target)
+	var incoming_plain := _bbcode_to_plain(text)
 
 	if stack2.size() > 0:
 		var top_bubble: Control = stack2[0] as Control
 		if top_bubble != null and is_instance_valid(top_bubble):
 			var existing_text := _get_bubble_text(top_bubble)
-			if existing_text == text:
+			if existing_text == incoming_plain:
 				var top_label := top_bubble.get_node_or_null("BubbleLabel") as RichTextLabel
 				if top_label:
-					_apply_text_with_type_plan(top_label, text)
+					_apply_text_with_bubble_typewriter(top_label, text)
 					top_label.visible_characters = -1
 				if top_bubble.has_method("request_sync"):
 					top_bubble.call("request_sync")
@@ -401,7 +415,7 @@ func _spawn_bubble(text: String, target: Node, presentation: String, duration: f
 		bubble.call("set_presentation", presentation)
 	var new_label := bubble.get_node_or_null("BubbleLabel") as RichTextLabel
 	if new_label:
-		_apply_text_with_type_plan(new_label, text)
+		_apply_text_with_bubble_typewriter(new_label, text)
 		new_label.visible_characters = -1
 	target.add_child(bubble)
 	if bubble.has_method("request_sync"):

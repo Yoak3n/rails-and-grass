@@ -2,7 +2,7 @@ extends CharacterBody2D
 class_name Player
 
 enum State { PLAYING, CUTSCENE }
-var current_state = State.PLAYING
+@export var current_state = State.PLAYING
 var _can_move_base: bool = true
 var _can_move_effective: bool = true
 var _movement_locks: Dictionary = {}
@@ -18,6 +18,7 @@ var can_move: bool:
 		_can_move_base = value
 		_recompute_can_move()
 @export var speed: float = 150.0 # 移动速度
+@export var animation_direction_override: Vector2 = Vector2.ZERO
 @onready var interact_detector: Area2D = $InteractDetector
 @onready var visuals = $CollisionShape2D/Visuals
 @onready var player_camera = $Camera2D
@@ -27,6 +28,7 @@ var current_interactable: Node = null
 var _overlapping_interactables: Array[Node] = []
 var last_anim_dir = "idle"
 var move_right: bool = false
+
 func _ready() -> void:
 	add_to_group("player")
 	pause_menu.visible = true
@@ -42,15 +44,9 @@ func _ready() -> void:
 		CutsceneManager.cutscene_finished.connect(_on_cutscene_finished)
 	_recompute_can_move()
 	
-func _physics_process(_delta: float) -> void:
-	if not can_move:
-		anim_player.play("idle")
-		velocity = Vector2.ZERO
-		move_and_slide()
-		return
-	var input_dir = Input.get_vector("left","right","up","down")
-	if input_dir != Vector2.ZERO:
-		var snap_dir = input_dir.sign()
+func play_animaiton(direction: Vector2) -> void:
+	if direction != Vector2.ZERO:
+		var snap_dir = direction.sign()
 		match snap_dir:
 			Vector2(1,0):
 				last_anim_dir = "right"
@@ -79,9 +75,17 @@ func _physics_process(_delta: float) -> void:
 		anim_player.play(last_anim_dir)
 	else:
 		anim_player.play("idle")
-	velocity = input_dir * speed
+	velocity = direction * speed
 	velocity.y *= 0.5
 	move_and_slide()
+
+
+func _physics_process(_delta: float) -> void:
+	if can_move:
+		var input_dir = Input.get_vector("left","right","up","down")
+		play_animaiton(input_dir)
+	else:
+		play_animaiton(animation_direction_override)
 
 func _input(event: InputEvent)-> void:
 	if not can_move:

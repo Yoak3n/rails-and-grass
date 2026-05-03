@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bsp87wvnxorsq"]
+
+[ext_resource type="ArrayMesh" uid="uid://c1dwtd0j2ycfd" path="res://assets/models/shop/Shop-1-ShopBuilding_2.obj" id="1_fjqnv"]
+[ext_resource type="ArrayMesh" uid="uid://cubxkpo55ctmb" path="res://assets/models/shop/Shop-2-PhoneCabin.obj" id="2_cjpmy"]
+
+[node name="Home" type="Node3D" unique_id=271386299]
+
+[node name="Shop1ShopBuilding2" type="MeshInstance3D" parent="." unique_id=1001436652]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.934, 0, 3.107)
+mesh = ExtResource("1_fjqnv")
+
+[node name="Shop2PhoneCabin" type="MeshInstance3D" parent="." unique_id=1563420185]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.581889, -1.53, -3.716)
+mesh = ExtResource("2_cjpmy")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=430800908]
+transform = Transform3D(-0.7071068, -0.40860704, 0.5770964, 0, 0.8161376, 0.5778576, -0.7071068, 0.40860704, -0.5770964, 8.154857, 9.5156, -8.106)
+projection = 1
+current = true
+fov = 42.01948
+size = 12.612779
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D" unique_id=1134183538]

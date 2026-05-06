@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://den5cqbfmtfaw"]
+[gd_scene load_steps=3 format=3 uid="uid://den5cqbfmtfaw"]
 
 [ext_resource type="Script" uid="uid://b110svqyn4cir" path="res://core/ui/pause_menu/pause_menu.gd" id="1_6gjcc"]
+[ext_resource type="PackedScene" path="res://core/ui/save_panel/save_panel.tscn" id="2_save_panel"]
 
 [node name="CanvasLayer" type="CanvasLayer" unique_id=1463644565]
 
@@ -44,15 +45,15 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = 368.0
+offset_left = 200.0
 offset_top = 367.0
-offset_right = 676.0
+offset_right = 800.0
 offset_bottom = 398.0
 grow_horizontal = 2
 grow_vertical = 0
 
 [node name="Quit" type="Button" parent="PauseMenu/HBoxContainer" unique_id=1447943449]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "退出游戏"
@@ -61,7 +62,20 @@ text = "退出游戏"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="SaveButton" type="Button" parent="PauseMenu/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "保存游戏"
+
+[node name="LoadButton" type="Button" parent="PauseMenu/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "读取存档"
+
 [node name="Continue" type="Button" parent="PauseMenu/HBoxContainer" unique_id=1641075831]
-custom_minimum_size = Vector2(150, 0)
+custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 text = "继续游戏"
+
+[node name="SavePanel" parent="PauseMenu" instance=ExtResource("2_save_panel")]
+visible = false

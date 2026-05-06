@@ -1,6 +1,7 @@
-[gd_scene format=3 uid="uid://bthraukibjyov"]
+[gd_scene load_steps=3 format=3 uid="uid://bthraukibjyov"]
 
 [ext_resource type="Script" uid="uid://b4vwj8ie1qyhv" path="res://scenes/common/start_menu.gd" id="1_d2d7q"]
+[ext_resource type="PackedScene" path="res://core/ui/save_panel/save_panel.tscn" id="2_save_panel"]
 
 [node name="MainMenu" type="Control" unique_id=282178862]
 layout_mode = 3
@@ -57,7 +58,15 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "新游戏"
 
+[node name="ContinueButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "继续游戏"
+
 [node name="QuitButton" type="Button" parent="VBoxContainer" unique_id=321370023]
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "退出"
+
+[node name="SavePanel" parent="." instance=ExtResource("2_save_panel")]
+visible = false

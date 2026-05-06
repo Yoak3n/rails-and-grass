@@ -18,5 +18,6 @@ func show_monolgue():
 	DialogueManager.start_dialogue("monologue")
 
 func play_flashback():
-	flashback.start({"image": "res://assets/flashbacks/scene.png", "hold": 0.5})
+	flashback.start({"image": "res://assets/pictures/moon_night/orig.png", "hold": 0.5,"shake": 0.5})
 	await flashback.finished
+	SceneManager.change_scene("res://scenes/chapter_1/chapter_1_street.tscn")

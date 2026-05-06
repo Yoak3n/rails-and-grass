@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://dw31fyfkqtkkj"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_4v7ti"]
-size = Vector2(48, 48)
+[sub_resource type="Gradient" id="Gradient_n8qlu"]
+offsets = PackedFloat32Array(0, 0.0045454544)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_vtcgl"]
+gradient = SubResource("Gradient_n8qlu")
+fill_from = Vector2(0, 1)
 
 [node name="Umbrella" type="Node2D" unique_id=723840651]
 
@@ -9,4 +13,4 @@ size = Vector2(48, 48)
 modulate = Color(1, 0.8745098, 0.5411765, 1)
 self_modulate = Color(1, 0.8745098, 0.5411765, 1)
 y_sort_enabled = true
-texture = SubResource("PlaceholderTexture2D_4v7ti")
+texture = SubResource("GradientTexture2D_vtcgl")

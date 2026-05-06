@@ -26,6 +26,7 @@ GameState="*uid://dbeegoapn4lgo"
 SceneManager="*uid://46wg83t6j4fl"
 CutsceneManager="*res://_autoloads/cutscene_manager.gd"
 GameUI="*uid://1whudjxeeo2o"
+SaveManager="*res://_autoloads/save_manager.gd"
 
 [display]
 

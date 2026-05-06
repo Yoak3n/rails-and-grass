@@ -195,6 +195,7 @@ _data = {
 viewport_path = NodePath("SubViewport")
 
 [node name="Chapter1End" type="Node2D" unique_id=2079357279]
+y_sort_enabled = true
 script = ExtResource("1_h8m2g")
 
 [node name="Background" type="Sprite2D" parent="." unique_id=199765872]
@@ -210,6 +211,7 @@ energy = 0.0
 texture = SubResource("GradientTexture2D_gelxu")
 
 [node name="ChengYan" parent="." unique_id=444613394 instance=ExtResource("3_h8m2g")]
+z_index = 1
 position = Vector2(-200, 200)
 current_state = 1
 speed = 500.0
@@ -235,7 +237,7 @@ render_target_update_mode = 1
 [node name="Home" parent="SubViewport" unique_id=271386299 instance=ExtResource("4_gelxu")]
 
 [node name="StaticBody2D" type="StaticBody2D" parent="." unique_id=400744566]
-y_sort_enabled = true
+z_index = 1
 position = Vector2(113, -376)
 scale = Vector2(0.56, 0.56)
 

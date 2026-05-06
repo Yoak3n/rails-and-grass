@@ -23,15 +23,17 @@ func _ready() -> void:
 # --- 关卡流初始化 ---
 
 func _setup_spawn_point() -> void:
-	# 检查 SceneManager 是否携带了目的地指令
 	var spawn_name = SceneManager.next_spawn_point
 	print("Level Ready: 尝试寻找出生点 -> ", spawn_name)
-	
-	if spawn_name != "":
-		# 在场景树中寻找名叫这个字符串的节点（通常是一个空的 Marker2D）
+
+	if spawn_name == "__saved_pos__":
+		player.global_position = SceneManager._saved_load_position
+		SceneManager.next_spawn_point = ""
+		SceneManager._saved_load_position = Vector2.ZERO
+		print("Level Ready: 玩家已从存档位置恢复 -> ", player.global_position)
+	elif spawn_name != "":
 		var spawn_node = find_child(spawn_name, true, false)
 		if spawn_node and spawn_node is Node2D:
-			# 找到出生点，瞬间把玩家传送过去！
 			player.global_position = spawn_node.global_position
 			print("Level Ready: 玩家已传送到 -> ", spawn_node.global_position)
 		else:

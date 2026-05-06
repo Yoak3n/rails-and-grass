@@ -13,9 +13,9 @@ var _is_transitioning: bool = false
 
 # 全局存储玩家切图时的位置与朝向（如果需要）
 var next_spawn_point: String = ""
+var _saved_load_position: Vector2 = Vector2.ZERO
 
 func _ready() -> void:
-	# 确保这个单例即使在场景暂停时也能运行黑屏动画
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	# 1. 动态创建一个层级极高（Layer 100）的 CanvasLayer
@@ -64,9 +64,13 @@ func change_scene(path: String, spawn_point_name: String = "", fade_duration: fl
 		
 	# 等待新场景在下一帧初始化完毕 ( _ready 被调用 )
 	await get_tree().process_frame
-	
-	# 此时新关卡已经加载完成，如果你需要在关卡内根据 spawn_point_name 移动玩家
-	# 可以在这里或者在新关卡的 _ready() 里调用 SceneManager.next_spawn_point
+
+	if _saved_load_position != Vector2.ZERO:
+		var players := get_tree().get_nodes_in_group("player")
+		if players.size() > 0 and players[0] is Node2D:
+			(players[0] as Node2D).global_position = _saved_load_position
+		_saved_load_position = Vector2.ZERO
+		next_spawn_point = ""
 	
 	# 阶段三：淡入（Fade In 画面亮起）
 	var tween_in = create_tween()
@@ -78,3 +82,8 @@ func change_scene(path: String, spawn_point_name: String = "", fade_duration: fl
 	get_tree().paused = false
 	_is_transitioning = false
 	transition_finished.emit()
+
+	if path != "res://scenes/common/start_menu.tscn":
+		SaveManager.start_auto_save()
+	else:
+		SaveManager.stop_auto_save()

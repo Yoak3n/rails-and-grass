@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bsp87wvnxorsq" path="res://scenes/viewport/house/home.tscn" id="4_gelxu"]
 [ext_resource type="Texture2D" uid="uid://cjxn8kggicj10" path="res://core/components/effects/light/night_light_2d.tres" id="4_ts68t"]
 [ext_resource type="PackedScene" uid="uid://ckng6oc3osbn4" path="res://core/ui/dialogue/dialogue_ui.tscn" id="6_g0h6l"]
+[ext_resource type="PackedScene" path="res://core/components/effects/rain/rain_effect.tscn" id="7_rain"]
 
 [sub_resource type="Gradient" id="Gradient_h8m2g"]
 offsets = PackedFloat32Array(0, 0.24545455, 0.72727275, 0.9590909)
@@ -256,6 +257,8 @@ polygon = PackedVector2Array(276.7857, 78.57147, 278.57144, 92.85718, 323.2143, 
 color = Color(0.101960786, 0.16862746, 0.23529412, 1)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1979469094]
+
+[node name="RainEffect" parent="." instance=ExtResource("7_rain")]
 
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("6_g0h6l")]
 

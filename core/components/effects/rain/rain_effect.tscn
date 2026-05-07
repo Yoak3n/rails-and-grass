@@ -1,0 +1,22 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://core/components/effects/rain/rain_effect.gd" id="1_rain"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rain"]
+direction = Vector3(0.2, 1, 0)
+spread = 5.0
+initial_velocity_min = 480.0
+initial_velocity_max = 600.0
+gravity = Vector3(0, 400, 0)
+scale_min = 0.3
+scale_max = 0.8
+color = Color(0.6, 0.7, 0.85, 0.5)
+emission_shape = 1
+emission_box_extents = Vector3(600, 0, 0)
+
+[node name="RainEffect" type="GPUParticles2D"]
+z_index = 100
+amount = 300
+lifetime = 1.5
+process_material = SubResource("ParticleProcessMaterial_rain")
+script = ExtResource("1_rain")

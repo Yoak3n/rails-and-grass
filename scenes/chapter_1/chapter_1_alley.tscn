@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cvgvmrra2itjd" path="res://scenes/chapter_1/items/trash.tscn" id="6_ti18t"]
 [ext_resource type="PackedScene" uid="uid://28g6o6k2axcn" path="res://scenes/common/interactable_item.tscn" id="8_fdost"]
 [ext_resource type="PackedScene" uid="uid://kt0ckddcw0o" path="res://scenes/common/teleport.tscn" id="8_vo20t"]
+[ext_resource type="PackedScene" path="res://core/components/effects/rain/rain_effect.tscn" id="10_rain"]
 
 [sub_resource type="Resource" id="Resource_1gxx5"]
 script = ExtResource("3_fdost")
@@ -60,11 +61,17 @@ texture = ExtResource("4_1gxx5")
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("5_uls5r")]
 visible = false
 
+[node name="RainEffect" parent="." unique_id=1301197053 instance=ExtResource("10_rain")]
+position = Vector2(83, 0)
+rain_scale_min = 4.95
+
 [node name="Transport" parent="." unique_id=1209401574 instance=ExtResource("8_vo20t")]
 position = Vector2(-105, 32)
 item_name = "巷口"
 
 [node name="Items" type="Node2D" parent="." unique_id=673198911]
+
+[node name="Pawnshop" parent="Items" unique_id=216901865 instance=ExtResource("8_fdost")]
 
 [node name="Trash" parent="Items" unique_id=1884696071 instance=ExtResource("6_ti18t")]
 position = Vector2(368, 215)

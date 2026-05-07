@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://cmu5won3ykgxq" path="res://core/characters/npc/zhiyi.tscn" id="8_ixxn4"]
 [ext_resource type="Script" uid="uid://0xffddu7thij" path="res://scenes/chapter_1/scripts/car.gd" id="9_car"]
 [ext_resource type="PackedScene" uid="uid://b1tbf5uos3b7h" path="res://scenes/viewport/car/car_up_to_down.tscn" id="10_sibe8"]
+[ext_resource type="PackedScene" path="res://core/components/effects/rain/rain_effect.tscn" id="11_rain"]
 
 [sub_resource type="Resource" id="Resource_sibe8"]
 script = ExtResource("4_eex1l")
@@ -65,6 +66,8 @@ target_scene_path = "uid://bt7ubt723n66w"
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1946930511]
 layer = 99
+
+[node name="RainEffect" parent="." instance=ExtResource("11_rain")]
 
 [node name="DialogueUI" parent="CanvasLayer" unique_id=1780391931 instance=ExtResource("6_u6lxk")]
 mouse_filter = 2

@@ -47,7 +47,12 @@ layout_mode = 1
 [node name="SettingMenu" parent="MainMenu" unique_id=1559348554 instance=ExtResource("3_2jppj")]
 process_mode = 3
 visible = false
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [connection signal="pressed" from="MainMenu/Header/LogBtn" to="." method="_on_log_btn_pressed"]
 [connection signal="pressed" from="MainMenu/Header/SettingBtn" to="." method="_on_setting_btn_pressed"]

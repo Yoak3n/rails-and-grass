@@ -5,6 +5,7 @@ const MAX_MANUAL_SLOTS := 10
 const MAX_AUTO_SLOTS := 3
 const SAVE_VERSION := 1
 const AUTO_SAVE_INTERVAL := 600.0
+const _ENCRYPT_KEY := "cmls5-and-gr4ss@2026"
 
 signal save_completed(slot: int)
 signal load_completed(slot: int)
@@ -55,7 +56,7 @@ func save_manual(slot: int) -> void:
 	save_data["slot"] = slot
 	save_data["type"] = "manual"
 	var json_str := JSON.stringify(save_data, "\t")
-	var file := FileAccess.open(_manual_save_path(slot), FileAccess.WRITE)
+	var file := FileAccess.open_encrypted_with_pass(_manual_save_path(slot), FileAccess.WRITE, _ENCRYPT_KEY)
 	if file == null:
 		var err_msg := "无法写入存档文件: %s" % _manual_save_path(slot)
 		push_error(err_msg)
@@ -147,7 +148,7 @@ func do_auto_save() -> void:
 	save_data["slot"] = _auto_save_index
 	save_data["type"] = "auto"
 	var json_str := JSON.stringify(save_data, "\t")
-	var file := FileAccess.open(_auto_save_path(_auto_save_index), FileAccess.WRITE)
+	var file := FileAccess.open_encrypted_with_pass(_auto_save_path(_auto_save_index), FileAccess.WRITE, _ENCRYPT_KEY)
 	if file == null:
 		push_error("SaveManager: 无法写入自动存档 -> 槽位 %d" % _auto_save_index)
 		return
@@ -259,7 +260,7 @@ func _apply_save_data(data: Dictionary) -> void:
 func _read_json_file(path: String) -> Dictionary:
 	if not FileAccess.file_exists(path):
 		return {}
-	var file := FileAccess.open(path, FileAccess.READ)
+	var file := FileAccess.open_encrypted_with_pass(path, FileAccess.READ, _ENCRYPT_KEY)
 	if file == null:
 		return {}
 	var json_str := file.get_as_text()

@@ -17,6 +17,7 @@ func _ready() -> void:
 	setting_menu.hide()
 	
 	log_panel.on_history_visible_update.connect(_on_history_panel_update)
+	setting_menu.close_requested.connect(_on_setting_menu_close_requested)
 	
 	
 func _input(event: InputEvent) -> void:
@@ -87,3 +88,7 @@ func _on_history_panel_update(history_visible: bool):
 	if not history_visible:
 		if current_open_panel == log_panel:
 			close_current_panel()
+
+func _on_setting_menu_close_requested():
+	if current_open_panel == setting_menu:
+		close_current_panel()

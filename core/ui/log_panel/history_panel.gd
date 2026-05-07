@@ -19,16 +19,6 @@ func show_history() -> void:
 		
 	# 2. 读取 Manager 中的数据并动态生成 RichTextLabel
 	for record in DialogueManager.session_history:
-		#var lbl := RichTextLabel.new()
-		#lbl.bbcode_enabled = true
-		#lbl.fit_content = true
-		#lbl.scroll_active = false
-		#lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-		#lbl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		#lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
-		#lbl.add_theme_font_size_override("normal_font_size", 22) # 根据你的UI调整字号
-		#var spk: String = record["speaker"]
-		#var txt: String = record["text"]
 		var item := _HISTORY_ITEM_SCENE.instantiate() as HistoryItem
 		if not item:
 			continue
